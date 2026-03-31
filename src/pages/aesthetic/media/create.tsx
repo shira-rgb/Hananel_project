@@ -16,12 +16,18 @@ export const AestheticMediaCreate = () => {
           rules={[{ required: true, message: "חובה להעלות קובץ" }]}
         >
           <MediaUpload
-            onUploadComplete={({ file_url, file_name, file_type, mime_type, file_size_bytes }) => {
-              form.setFieldsValue({ file_url, file_name, file_type, mime_type, file_size_bytes });
+            onUploadComplete={({ file_url, file_type, mime_type, file_size_bytes }) => {
+              form.setFieldsValue({ file_url, file_type, mime_type, file_size_bytes });
             }}
           />
         </Form.Item>
-        <Form.Item name="file_name" hidden><Input /></Form.Item>
+        <Form.Item
+          label="שם לקובץ"
+          name="file_name"
+          rules={[{ required: true, message: "חובה לתת שם לקובץ" }]}
+        >
+          <Input placeholder='לדוגמה: "לפני ואחרי בוטוקס - מרץ 2026"' />
+        </Form.Item>
         <Form.Item name="file_type" hidden><Input /></Form.Item>
         <Form.Item name="mime_type" hidden><Input /></Form.Item>
         <Form.Item name="file_size_bytes" hidden><Input /></Form.Item>

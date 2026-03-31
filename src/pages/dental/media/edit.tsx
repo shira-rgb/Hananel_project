@@ -20,7 +20,13 @@ export const DentalMediaEdit = () => {
             }}
           />
         </Form.Item>
-        <Form.Item name="file_name" hidden><Input /></Form.Item>
+        <Form.Item
+          label="שם לקובץ"
+          name="file_name"
+          rules={[{ required: true, message: "חובה לתת שם לקובץ" }]}
+        >
+          <Input placeholder='לדוגמה: "לפני ואחרי ציפויים - מרץ 2026"' />
+        </Form.Item>
         <Form.Item name="file_type" hidden><Input /></Form.Item>
         <Form.Item name="mime_type" hidden><Input /></Form.Item>
         <Form.Item name="file_size_bytes" hidden><Input /></Form.Item>
