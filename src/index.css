@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&display=swap');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  direction: rtl;
+  font-family: 'Heebo', 'Arial', sans-serif;
+  background: #f5f3f7;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+.ant-layout {
+  direction: rtl;
+}
+
+.ant-menu-item .anticon,
+.ant-menu-submenu-title .anticon {
+  margin-left: 10px;
+  margin-right: 0;
+}
+
+.ant-card:hover {
+  box-shadow: 0 4px 20px rgba(124, 107, 139, 0.15);
+  transition: box-shadow 0.2s ease;
+}
+
+.ant-table {
+  direction: rtl;
+}
+
+.ant-tag {
+  border-radius: 20px;
+}
+
+.ant-form-item-label {
+  text-align: right;
+}
