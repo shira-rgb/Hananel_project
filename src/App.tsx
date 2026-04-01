@@ -196,7 +196,7 @@ function App() {
               <Route path="/dental/products/edit/:id" element={<DentalProductEdit />} />
 
               <Route path="/dental/followup" element={<DentalFollowupList />} />
-              <Route path="/dental/followup/create" element={<AestheticFollowupCreate />} />
+              <Route path="/dental/followup/create" element={<DentalFollowupCreate />} />
               <Route path="/dental/followup/edit/:id" element={<DentalFollowupEdit />} />
 
               <Route path="/dental/clients" element={<DentalClientList />} />
