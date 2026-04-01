@@ -1,4 +1,4 @@
-import { Refine } from "@refinedev/core";
+import { Authenticated, Refine } from "@refinedev/core";
 import { ThemedLayout, ThemedSider, useNotificationProvider } from "@refinedev/antd";
 import { dataProvider, liveProvider } from "@refinedev/supabase";
 import routerBindings, {
@@ -144,25 +144,27 @@ function App() {
           <Routes>
             <Route
               element={
-                <ThemedLayout
-                  Sider={() => (
-                    <ThemedSider
-                      Title={() => (
-                        <div style={{ padding: "16px 12px", color: "#fff", fontWeight: 700, fontSize: 16 }}>
-                          חנאנל
-                        </div>
-                      )}
-                      render={({ items, logout }: { items: React.ReactNode; logout: React.ReactNode }) => (
-                        <>
-                          {items}
-                          {logout}
-                        </>
-                      )}
-                    />
-                  )}
-                >
-                  <Outlet />
-                </ThemedLayout>
+                <Authenticated key="authenticated-layout" fallback={<NavigateToResource resource="login" />}>
+                  <ThemedLayout
+                    Sider={() => (
+                      <ThemedSider
+                        Title={() => (
+                          <div style={{ padding: "16px 12px", color: "#fff", fontWeight: 700, fontSize: 16 }}>
+                            חנאנל
+                          </div>
+                        )}
+                        render={({ items, logout }: { items: React.ReactNode; logout: React.ReactNode }) => (
+                          <>
+                            {items}
+                            {logout}
+                          </>
+                        )}
+                      />
+                    )}
+                  >
+                    <Outlet />
+                  </ThemedLayout>
+                </Authenticated>
               }
             >
               <Route index element={<NavigateToResource resource="aesthetic_media" />} />
@@ -194,7 +196,7 @@ function App() {
               <Route path="/dental/products/edit/:id" element={<DentalProductEdit />} />
 
               <Route path="/dental/followup" element={<DentalFollowupList />} />
-              <Route path="/dental/followup/create" element={<DentalFollowupCreate />} />
+              <Route path="/dental/followup/create" element={<AestheticFollowupCreate />} />
               <Route path="/dental/followup/edit/:id" element={<DentalFollowupEdit />} />
 
               <Route path="/dental/clients" element={<DentalClientList />} />
