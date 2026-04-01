@@ -7,7 +7,7 @@ import routerBindings, {
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import React from "react";
-import { BrowserRouter, Outlet, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
 import { ConfigProvider } from "antd";
 import heIL from "antd/locale/he_IL";
 import "@refinedev/antd/dist/reset.css";
@@ -144,7 +144,7 @@ function App() {
           <Routes>
             <Route
               element={
-                <Authenticated key="authenticated-layout" fallback={<NavigateToResource resource="login" />}>
+                <Authenticated key="authenticated-layout" fallback={<Navigate to="/login" replace />}>
                   <ThemedLayout
                     Sider={() => (
                       <ThemedSider
