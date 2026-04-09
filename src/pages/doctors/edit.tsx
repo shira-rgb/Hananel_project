@@ -1,0 +1,64 @@
+import { Edit, useForm, DeleteButton } from "@refinedev/antd";
+import { Form, Input, Select, Switch } from "antd";
+import { useNavigate } from "react-router-dom";
+
+const { TextArea } = Input;
+
+export const DoctorEdit = () => {
+  const navigate = useNavigate();
+  const { formProps, saveButtonProps, id } = useForm({ resource: "doctors" });
+
+  return (
+    <Edit
+      title="עריכת רופא"
+      saveButtonProps={saveButtonProps}
+      headerButtons={({ defaultButtons }) => (
+        <>
+          {defaultButtons}
+          <DeleteButton
+            resource="doctors"
+            recordItemId={id as string}
+            onSuccess={() => navigate("/doctors")}
+          />
+        </>
+      )}
+    >
+      <Form {...formProps} layout="vertical">
+        <Form.Item label="שם" name="name" rules={[{ required: true }]}>
+          <Input />
+        </Form.Item>
+        <Form.Item label="תחום" name="specialty">
+          <Input />
+        </Form.Item>
+        <Form.Item label="מגדר" name="gender">
+          <Select allowClear>
+            <Select.Option value="זכר">זכר</Select.Option>
+            <Select.Option value="נקבה">נקבה</Select.Option>
+            <Select.Option value="אחר">אחר</Select.Option>
+          </Select>
+        </Form.Item>
+        <Form.Item label="ניסיון" name="experience">
+          <Input />
+        </Form.Item>
+        <Form.Item label="השכלה / תואר" name="education">
+          <Input />
+        </Form.Item>
+        <Form.Item label="שפות" name="languages">
+          <Input />
+        </Form.Item>
+        <Form.Item label="קליניקה / סניף" name="clinic_branch">
+          <Input />
+        </Form.Item>
+        <Form.Item label="ימים ושעות פעילות" name="working_hours">
+          <TextArea rows={3} />
+        </Form.Item>
+        <Form.Item label="מקבל/ת מטופלים חדשים" name="accepting_new_patients" valuePropName="checked">
+          <Switch checkedChildren="כן" unCheckedChildren="לא" />
+        </Form.Item>
+        <Form.Item label="מידע נוסף" name="additional_info">
+          <TextArea rows={5} />
+        </Form.Item>
+      </Form>
+    </Edit>
+  );
+};

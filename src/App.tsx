@@ -49,6 +49,9 @@ import { DentalClientEdit } from "./pages/dental/clients/edit";
 import { DentalDoctorList } from "./pages/dental/doctor/list";
 import { DentalDoctorCreate } from "./pages/dental/doctor/create";
 import { DentalDoctorEdit } from "./pages/dental/doctor/edit";
+import { DoctorList } from "./pages/doctors/list";
+import { DoctorCreate } from "./pages/doctors/create";
+import { DoctorEdit } from "./pages/doctors/edit";
 
 // FAQ pages
 import { AestheticFAQList } from "./pages/aesthetic/faq/list";
@@ -81,6 +84,14 @@ function App() {
           routerProvider={routerBindings}
           notificationProvider={useNotificationProvider}
           resources={[
+            // ── רופאים ──
+            {
+              name: "doctors",
+              list: "/doctors",
+              create: "/doctors/create",
+              edit: "/doctors/edit/:id",
+              meta: { label: "👨‍⚕️ רופאים" },
+            },
             // ── קליניקת אסתטיקה ──
             {
               name: "aesthetic_section",
@@ -166,7 +177,7 @@ function App() {
               list: "/dental/doctor",
               create: "/dental/doctor/create",
               edit: "/dental/doctor/edit/:id",
-              meta: { label: "פרופיל רופא / פה ולסת", parent: "dental_section" },
+              meta: { label: "פרופיל רופא / פה ולסת", parent: "dental_section", hide: true },
             },
             {
               name: "dental_faq",
@@ -212,6 +223,11 @@ function App() {
               }
             >
               <Route index element={<NavigateToResource resource="aesthetic_media" />} />
+
+              {/* Doctors */}
+              <Route path="/doctors" element={<DoctorList />} />
+              <Route path="/doctors/create" element={<DoctorCreate />} />
+              <Route path="/doctors/edit/:id" element={<DoctorEdit />} />
 
               {/* Aesthetic */}
               <Route path="/aesthetic/media" element={<AestheticMediaList />} />

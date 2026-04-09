@@ -150,3 +150,19 @@ export interface DentalDoctorProfile {
   created_at: string;
   updated_at: string;
 }
+
+export interface Doctor {
+  id: string;
+  name: string;
+  specialty?: string;
+  gender?: string;
+  experience?: string;
+  education?: string;
+  languages?: string;
+  clinic_branch?: string;
+  accepting_new_patients?: boolean;
+  working_hours?: string;
+  additional_info?: string;
+  created_at: string;
+  updated_at: string;
+}
