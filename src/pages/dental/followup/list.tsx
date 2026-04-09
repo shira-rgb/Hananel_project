@@ -1,57 +1,104 @@
 import { useTable, List, DeleteButton, EditButton } from "@refinedev/antd";
-import { Table, Tag, Space } from "antd";
+import { Table, Tag, Space, Popover, Checkbox, Button } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
+import { useState, useMemo, useCallback } from "react";
+import { useNavigate } from "react-router-dom";
 import type { DentalFollowupMessage } from "../../../interfaces";
 import { delayUnitLabel } from "../../../utils/formatters";
 
+type ColKey = "message_text" | "delay" | "is_active";
+
+const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
+  { key: "message_text", label: "תוכן ההודעה", defaultVisible: true },
+  { key: "delay",        label: "שליחה",        defaultVisible: true },
+  { key: "is_active",    label: "פעיל",          defaultVisible: true },
+];
+
 export const DentalFollowupList = () => {
+  const navigate = useNavigate();
   const { tableProps } = useTable<DentalFollowupMessage>({
     resource: "dental_followup_messages",
     meta: { select: "*, dental_products(name)" },
     sorters: { initial: [{ field: "created_at", order: "desc" }] },
   });
 
+  const [visibleCols, setVisibleCols] = useState<Set<ColKey>>(
+    new Set(COLUMN_DEFS.filter((c) => c.defaultVisible).map((c) => c.key))
+  );
+  const toggleCol = useCallback((key: ColKey, checked: boolean) => {
+    setVisibleCols((prev) => { const n = new Set(prev); checked ? n.add(key) : n.delete(key); return n; });
+  }, []);
+  const vis = (key: ColKey) => visibleCols.has(key);
+
+  const colVisibilityContent = (
+    <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 160 }}>
+      {COLUMN_DEFS.map((col) => (
+        <Checkbox key={col.key} checked={visibleCols.has(col.key)} onChange={(e) => toggleCol(col.key, e.target.checked)}>
+          {col.label}
+        </Checkbox>
+      ))}
+    </div>
+  );
+
+  const columns = useMemo(() => [
+    {
+      key: "product", title: "טיפול", dataIndex: ["dental_products", "name"],
+      render: (name: string) => name ? <Tag color="blue">{name}</Tag> : <Tag>כללי</Tag>,
+    },
+    vis("message_text") && {
+      key: "message_text", title: "תוכן ההודעה", dataIndex: "message_text",
+      render: (text: string) => (
+        <div style={{ maxWidth: 320, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={text}>{text}</div>
+      ),
+    },
+    vis("delay") && {
+      key: "delay", title: "שליחה", width: 180,
+      render: (_: unknown, record: DentalFollowupMessage) => (
+        <Tag color="cyan">{record.delay_value} {delayUnitLabel(record.delay_unit)} אחרי טיפול</Tag>
+      ),
+    },
+    vis("is_active") && {
+      key: "is_active", title: "פעיל", dataIndex: "is_active", width: 80,
+      render: (v: boolean) => v ? <Tag color="green">פעיל</Tag> : <Tag color="red">כבוי</Tag>,
+    },
+    {
+      key: "actions", title: "פעולות", width: 100,
+      render: (_: unknown, record: DentalFollowupMessage) => (
+        <Space>
+          <EditButton hideText size="small" recordItemId={record.id} />
+          <DeleteButton hideText size="small" recordItemId={record.id} />
+        </Space>
+      ),
+    },
+  ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
+
   return (
-    <List title="הודעות פולואפ — מרפאת שיניים" createButtonProps={{ children: "הוסף הודעה" }}>
-      <Table {...tableProps} rowKey="id">
-        <Table.Column
-          title="טיפול"
-          dataIndex={["dental_products", "name"]}
-          render={(name: string) => name ? <Tag color="blue">{name}</Tag> : <Tag>כללי</Tag>}
-        />
-        <Table.Column
-          title="תוכן ההודעה"
-          dataIndex="message_text"
-          ellipsis
-          render={(text: string) => (
-            <div style={{ maxWidth: 320, whiteSpace: "pre-line", direction: "rtl" }}>{text}</div>
-          )}
-        />
-        <Table.Column
-          title="שליחה"
-          render={(_: unknown, record: DentalFollowupMessage) => (
-            <Tag color="cyan">
-              {record.delay_value} {delayUnitLabel(record.delay_unit)} אחרי טיפול
-            </Tag>
-          )}
-          width={180}
-        />
-        <Table.Column
-          title="פעיל"
-          dataIndex="is_active"
-          width={80}
-          render={(v: boolean) => v ? <Tag color="green">פעיל</Tag> : <Tag color="red">כבוי</Tag>}
-        />
-        <Table.Column
-          title="פעולות"
-          width={100}
-          render={(_: unknown, record: DentalFollowupMessage) => (
-            <Space>
-              <EditButton hideText size="small" recordItemId={record.id} />
-              <DeleteButton hideText size="small" recordItemId={record.id} />
-            </Space>
-          )}
-        />
-      </Table>
+    <List
+      title="הודעות פולואפ — מרפאת שיניים"
+      createButtonProps={{ children: "הוסף הודעה" }}
+      headerButtons={({ defaultButtons }) => (
+        <>
+          {defaultButtons}
+          <Popover content={colVisibilityContent} title="הצג עמודות" trigger="click" placement="bottomLeft">
+            <Button icon={<SettingOutlined />}>עמודות</Button>
+          </Popover>
+        </>
+      )}
+    >
+      <Table
+        {...tableProps}
+        rowKey="id"
+        columns={columns as any}
+        scroll={{ x: "max-content" }}
+        onRow={(record: DentalFollowupMessage) => ({
+          onClick: (e) => {
+            const target = e.target as HTMLElement;
+            if (target.closest("button") || target.closest(".ant-btn")) return;
+            navigate(`/dental/followup/edit/${record.id}`);
+          },
+          style: { cursor: "pointer" },
+        })}
+      />
     </List>
   );
 };

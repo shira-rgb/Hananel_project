@@ -40,7 +40,7 @@ export const AestheticProductCreate = () => {
 
         <Divider orientation="left">למי מתאים ולמי לא</Divider>
         <Form.Item label="מתי פונים לטיפול" name="indications">
-          <TextArea rows={3} placeholder="סימפטומים ומצבים שמובילים לטיפול זה..." />
+          <TextArea rows={3} placeholder="באילו מצבים לקוחות פונים למוצר זה? לדוגמה: נפיחות באזור, קושי בלעיסה, רצון להחליק קמטים..." />
         </Form.Item>
         <Form.Item label="גילאים מתאימים" name="suitable_ages">
           <Input placeholder="לדוגמה: מגיל 16 עם הורה, מגיל 18 ללא ליווי" />
@@ -75,7 +75,7 @@ export const AestheticProductCreate = () => {
         <Form.Item label="הוראות לאחר הטיפול" name="post_treatment_instructions">
           <TextArea rows={4} placeholder="מה אסור/מותר לאחר הטיפול..." />
         </Form.Item>
-        <Form.Item label="מתי לפנות לקליניקה לאחר טיפול" name="when_to_contact_clinic">
+        <Form.Item label="מתי לפנות לקליניקה לאחר טיפול (מצבי חרום)" name="when_to_contact_clinic">
           <TextArea rows={3} placeholder="תסמינים חריגים שמצריכים פנייה דחופה..." />
         </Form.Item>
 

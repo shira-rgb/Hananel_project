@@ -90,7 +90,7 @@ export const AestheticProductEdit = () => {
         <Form.Item label="הוראות לאחר הטיפול" name="post_treatment_instructions">
           <TextArea rows={4} />
         </Form.Item>
-        <Form.Item label="מתי לפנות לקליניקה לאחר טיפול" name="when_to_contact_clinic">
+        <Form.Item label="מתי לפנות לקליניקה לאחר טיפול (מצבי חרום)" name="when_to_contact_clinic">
           <TextArea rows={3} />
         </Form.Item>
 

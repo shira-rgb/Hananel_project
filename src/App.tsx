@@ -84,25 +84,17 @@ function App() {
           routerProvider={routerBindings}
           notificationProvider={useNotificationProvider}
           resources={[
-            // ── רופאים ──
-            {
-              name: "doctors",
-              list: "/doctors",
-              create: "/doctors/create",
-              edit: "/doctors/edit/:id",
-              meta: { label: "👨‍⚕️ רופאים" },
-            },
             // ── קליניקת אסתטיקה ──
             {
               name: "aesthetic_section",
               meta: { label: "✨ קליניקת אסתטיקה", route: "aesthetic" },
             },
             {
-              name: "aesthetic_media",
-              list: "/aesthetic/media",
-              create: "/aesthetic/media/create",
-              edit: "/aesthetic/media/edit/:id",
-              meta: { label: "מדיה", parent: "aesthetic_section" },
+              name: "aesthetic_business_info",
+              list: "/aesthetic/business",
+              create: "/aesthetic/business/create",
+              edit: "/aesthetic/business/edit/:id",
+              meta: { label: "מידע על העסק", parent: "aesthetic_section" },
             },
             {
               name: "aesthetic_products",
@@ -119,13 +111,6 @@ function App() {
               meta: { label: "הודעות פולואפ", parent: "aesthetic_section" },
             },
             {
-              name: "aesthetic_clients",
-              list: "/aesthetic/clients",
-              create: "/aesthetic/clients/create",
-              edit: "/aesthetic/clients/edit/:id",
-              meta: { label: "לקוחות", parent: "aesthetic_section", hide: true },
-            },
-            {
               name: "aesthetic_faq",
               list: "/aesthetic/faq",
               create: "/aesthetic/faq/create",
@@ -133,11 +118,18 @@ function App() {
               meta: { label: "שאלות ותשובות", parent: "aesthetic_section" },
             },
             {
-              name: "aesthetic_business_info",
-              list: "/aesthetic/business",
-              create: "/aesthetic/business/create",
-              edit: "/aesthetic/business/edit/:id",
-              meta: { label: "מידע על העסק", parent: "aesthetic_section" },
+              name: "aesthetic_media",
+              list: "/aesthetic/media",
+              create: "/aesthetic/media/create",
+              edit: "/aesthetic/media/edit/:id",
+              meta: { label: "מדיה", parent: "aesthetic_section" },
+            },
+            {
+              name: "aesthetic_clients",
+              list: "/aesthetic/clients",
+              create: "/aesthetic/clients/create",
+              edit: "/aesthetic/clients/edit/:id",
+              meta: { label: "לקוחות", parent: "aesthetic_section", hide: true },
             },
             // ── מרפאת שיניים ──
             {
@@ -145,11 +137,11 @@ function App() {
               meta: { label: "🦷 מרפאת שיניים", route: "dental" },
             },
             {
-              name: "dental_media",
-              list: "/dental/media",
-              create: "/dental/media/create",
-              edit: "/dental/media/edit/:id",
-              meta: { label: "מדיה", parent: "dental_section" },
+              name: "dental_business_info",
+              list: "/dental/business",
+              create: "/dental/business/create",
+              edit: "/dental/business/edit/:id",
+              meta: { label: "מידע על העסק", parent: "dental_section" },
             },
             {
               name: "dental_products",
@@ -166,6 +158,20 @@ function App() {
               meta: { label: "הודעות פולואפ", parent: "dental_section" },
             },
             {
+              name: "dental_faq",
+              list: "/dental/faq",
+              create: "/dental/faq/create",
+              edit: "/dental/faq/edit/:id",
+              meta: { label: "שאלות ותשובות", parent: "dental_section" },
+            },
+            {
+              name: "dental_media",
+              list: "/dental/media",
+              create: "/dental/media/create",
+              edit: "/dental/media/edit/:id",
+              meta: { label: "מדיה", parent: "dental_section" },
+            },
+            {
               name: "dental_clients",
               list: "/dental/clients",
               create: "/dental/clients/create",
@@ -179,19 +185,13 @@ function App() {
               edit: "/dental/doctor/edit/:id",
               meta: { label: "פרופיל רופא / פה ולסת", parent: "dental_section", hide: true },
             },
+            // ── רופאים ──
             {
-              name: "dental_faq",
-              list: "/dental/faq",
-              create: "/dental/faq/create",
-              edit: "/dental/faq/edit/:id",
-              meta: { label: "שאלות ותשובות", parent: "dental_section" },
-            },
-            {
-              name: "dental_business_info",
-              list: "/dental/business",
-              create: "/dental/business/create",
-              edit: "/dental/business/edit/:id",
-              meta: { label: "מידע על העסק", parent: "dental_section" },
+              name: "doctors",
+              list: "/doctors",
+              create: "/doctors/create",
+              edit: "/doctors/edit/:id",
+              meta: { label: "👨‍⚕️ רופאים" },
             },
           ]}
           options={{ syncWithLocation: true, warnWhenUnsavedChanges: true }}
