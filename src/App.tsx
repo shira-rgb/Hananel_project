@@ -50,6 +50,22 @@ import { DentalDoctorList } from "./pages/dental/doctor/list";
 import { DentalDoctorCreate } from "./pages/dental/doctor/create";
 import { DentalDoctorEdit } from "./pages/dental/doctor/edit";
 
+// FAQ pages
+import { AestheticFAQList } from "./pages/aesthetic/faq/list";
+import { AestheticFAQCreate } from "./pages/aesthetic/faq/create";
+import { AestheticFAQEdit } from "./pages/aesthetic/faq/edit";
+import { DentalFAQList } from "./pages/dental/faq/list";
+import { DentalFAQCreate } from "./pages/dental/faq/create";
+import { DentalFAQEdit } from "./pages/dental/faq/edit";
+
+// Business info pages
+import { AestheticBusinessList } from "./pages/aesthetic/business/list";
+import { AestheticBusinessCreate } from "./pages/aesthetic/business/create";
+import { AestheticBusinessEdit } from "./pages/aesthetic/business/edit";
+import { DentalBusinessList } from "./pages/dental/business/list";
+import { DentalBusinessCreate } from "./pages/dental/business/create";
+import { DentalBusinessEdit } from "./pages/dental/business/edit";
+
 function App() {
   return (
     <BrowserRouter>
@@ -98,6 +114,20 @@ function App() {
               edit: "/aesthetic/clients/edit/:id",
               meta: { label: "לקוחות", parent: "aesthetic_section", hide: true },
             },
+            {
+              name: "aesthetic_faq",
+              list: "/aesthetic/faq",
+              create: "/aesthetic/faq/create",
+              edit: "/aesthetic/faq/edit/:id",
+              meta: { label: "שאלות ותשובות", parent: "aesthetic_section" },
+            },
+            {
+              name: "aesthetic_business_info",
+              list: "/aesthetic/business",
+              create: "/aesthetic/business/create",
+              edit: "/aesthetic/business/edit/:id",
+              meta: { label: "מידע על העסק", parent: "aesthetic_section" },
+            },
             // ── מרפאת שיניים ──
             {
               name: "dental_section",
@@ -137,6 +167,20 @@ function App() {
               create: "/dental/doctor/create",
               edit: "/dental/doctor/edit/:id",
               meta: { label: "פרופיל רופא / פה ולסת", parent: "dental_section" },
+            },
+            {
+              name: "dental_faq",
+              list: "/dental/faq",
+              create: "/dental/faq/create",
+              edit: "/dental/faq/edit/:id",
+              meta: { label: "שאלות ותשובות", parent: "dental_section" },
+            },
+            {
+              name: "dental_business_info",
+              list: "/dental/business",
+              create: "/dental/business/create",
+              edit: "/dental/business/edit/:id",
+              meta: { label: "מידע על העסק", parent: "dental_section" },
             },
           ]}
           options={{ syncWithLocation: true, warnWhenUnsavedChanges: true }}
@@ -186,6 +230,14 @@ function App() {
               <Route path="/aesthetic/clients/create" element={<AestheticClientCreate />} />
               <Route path="/aesthetic/clients/edit/:id" element={<AestheticClientEdit />} />
 
+              <Route path="/aesthetic/faq" element={<AestheticFAQList />} />
+              <Route path="/aesthetic/faq/create" element={<AestheticFAQCreate />} />
+              <Route path="/aesthetic/faq/edit/:id" element={<AestheticFAQEdit />} />
+
+              <Route path="/aesthetic/business" element={<AestheticBusinessList />} />
+              <Route path="/aesthetic/business/create" element={<AestheticBusinessCreate />} />
+              <Route path="/aesthetic/business/edit/:id" element={<AestheticBusinessEdit />} />
+
               {/* Dental */}
               <Route path="/dental/media" element={<DentalMediaList />} />
               <Route path="/dental/media/create" element={<DentalMediaCreate />} />
@@ -206,6 +258,14 @@ function App() {
               <Route path="/dental/doctor" element={<DentalDoctorList />} />
               <Route path="/dental/doctor/create" element={<DentalDoctorCreate />} />
               <Route path="/dental/doctor/edit/:id" element={<DentalDoctorEdit />} />
+
+              <Route path="/dental/faq" element={<DentalFAQList />} />
+              <Route path="/dental/faq/create" element={<DentalFAQCreate />} />
+              <Route path="/dental/faq/edit/:id" element={<DentalFAQEdit />} />
+
+              <Route path="/dental/business" element={<DentalBusinessList />} />
+              <Route path="/dental/business/create" element={<DentalBusinessCreate />} />
+              <Route path="/dental/business/edit/:id" element={<DentalBusinessEdit />} />
             </Route>
 
             <Route path="/login" element={<LoginPage />} />

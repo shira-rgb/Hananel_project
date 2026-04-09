@@ -104,6 +104,44 @@ export interface DentalClient {
   updated_at: string;
 }
 
+export interface AestheticFAQ {
+  id: string;
+  question: string;
+  answer: string;
+  category?: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DentalFAQ {
+  id: string;
+  question: string;
+  answer: string;
+  category?: string;
+  is_active: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AestheticBusinessInfo {
+  id: string;
+  section_title: string;
+  content: string;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DentalBusinessInfo {
+  id: string;
+  section_title: string;
+  content: string;
+  display_order: number;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface DentalDoctorProfile {
   id: string;
   section_title: string;
