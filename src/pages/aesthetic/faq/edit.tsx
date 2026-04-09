@@ -37,7 +37,12 @@ export const AestheticFAQEdit = () => {
       )}
     >
       <Form {...formProps} layout="vertical">
-        <Form.Item label="קטגוריה" name="category">
+        <Form.Item
+          label="קטגוריה"
+          name="category"
+          normalize={(val) => (Array.isArray(val) ? val[0] ?? null : val)}
+          getValueProps={(val) => ({ value: val ? [val] : [] })}
+        >
           <Select
             mode="tags"
             options={categoryOptions}
