@@ -145,18 +145,26 @@ export interface DentalFAQ {
 
 export interface AestheticBusinessInfo {
   id: string;
-  section_title: string;
-  content: string;
-  display_order: number;
+  business_name?: string;
+  about?: string;
+  working_hours?: string;
+  address?: string;
+  waze_link?: string;
+  phone?: string;
+  notes?: string;
   created_at: string;
   updated_at: string;
 }
 
 export interface DentalBusinessInfo {
   id: string;
-  section_title: string;
-  content: string;
-  display_order: number;
+  business_name?: string;
+  about?: string;
+  working_hours?: string;
+  address?: string;
+  waze_link?: string;
+  phone?: string;
+  notes?: string;
   created_at: string;
   updated_at: string;
 }

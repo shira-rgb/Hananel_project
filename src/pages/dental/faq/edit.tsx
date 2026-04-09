@@ -1,12 +1,25 @@
 import { Edit, useForm, DeleteButton } from "@refinedev/antd";
-import { Form, Input, Switch } from "antd";
+import { useList } from "@refinedev/core";
+import { Form, Select, Input, Switch } from "antd";
 import { useNavigate } from "react-router-dom";
+import type { DentalFAQ } from "../../../interfaces";
 
 const { TextArea } = Input;
 
 export const DentalFAQEdit = () => {
   const navigate = useNavigate();
   const { formProps, saveButtonProps, id } = useForm({ resource: "dental_faq" });
+
+  const { data: faqData } = useList<DentalFAQ>({
+    resource: "dental_faq",
+    pagination: { pageSize: 500 },
+  });
+
+  const categoryOptions = [
+    ...new Set(
+      (faqData?.data || []).map((f) => f.category).filter(Boolean)
+    ),
+  ].map((c) => ({ label: c, value: c }));
 
   return (
     <Edit
@@ -25,7 +38,12 @@ export const DentalFAQEdit = () => {
     >
       <Form {...formProps} layout="vertical">
         <Form.Item label="קטגוריה" name="category">
-          <Input />
+          <Select
+            mode="tags"
+            options={categoryOptions}
+            maxCount={1}
+            tokenSeparators={[","]}
+          />
         </Form.Item>
         <Form.Item label="שאלה" name="question" rules={[{ required: true }]}>
           <Input />

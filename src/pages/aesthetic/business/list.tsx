@@ -1,89 +1,67 @@
-import { useTable, List, DeleteButton, EditButton } from "@refinedev/antd";
-import { Table, Space, Popover, Checkbox, Button } from "antd";
-import { SettingOutlined } from "@ant-design/icons";
-import { useState, useMemo, useCallback } from "react";
-import { useNavigate } from "react-router-dom";
-import type { AestheticBusinessInfo } from "../../../interfaces";
+import { useList, useUpdate } from "@refinedev/core";
+import { Form, Input, Button, Card, Spin, notification } from "antd";
+import { useEffect } from "react";
 
-type ColKey = "display_order" | "content";
-
-const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
-  { key: "display_order", label: "סדר",  defaultVisible: true },
-  { key: "content",       label: "תוכן", defaultVisible: true },
-];
+const { TextArea } = Input;
 
 export const AestheticBusinessList = () => {
-  const navigate = useNavigate();
-  const { tableProps } = useTable<AestheticBusinessInfo>({
+  const [form] = Form.useForm();
+
+  const { data, isLoading } = useList({
     resource: "aesthetic_business_info",
-    sorters: { initial: [{ field: "display_order", order: "asc" }] },
+    pagination: { pageSize: 1 },
   });
 
-  const [visibleCols, setVisibleCols] = useState<Set<ColKey>>(
-    new Set(COLUMN_DEFS.filter((c) => c.defaultVisible).map((c) => c.key))
-  );
-  const toggleCol = useCallback((key: ColKey, checked: boolean) => {
-    setVisibleCols((prev) => { const n = new Set(prev); checked ? n.add(key) : n.delete(key); return n; });
-  }, []);
-  const vis = (key: ColKey) => visibleCols.has(key);
+  const { mutate: update, isLoading: isSaving } = useUpdate();
+  const record = data?.data?.[0];
 
-  const colVisibilityContent = (
-    <div style={{ display: "flex", flexDirection: "column", gap: 8, minWidth: 130 }}>
-      {COLUMN_DEFS.map((col) => (
-        <Checkbox key={col.key} checked={visibleCols.has(col.key)} onChange={(e) => toggleCol(col.key, e.target.checked)}>
-          {col.label}
-        </Checkbox>
-      ))}
-    </div>
-  );
+  useEffect(() => {
+    if (record) form.setFieldsValue(record);
+  }, [record, form]);
 
-  const columns = useMemo(() => [
-    vis("display_order") && { key: "display_order", title: "סדר", dataIndex: "display_order", width: 70 },
-    { key: "section_title", title: "כותרת", dataIndex: "section_title" },
-    vis("content") && {
-      key: "content", title: "תוכן", dataIndex: "content",
-      render: (text: string) => (
-        <div style={{ maxWidth: 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={text}>{text}</div>
-      ),
-    },
-    {
-      key: "actions", title: "פעולות", width: 100,
-      render: (_: unknown, record: AestheticBusinessInfo) => (
-        <Space>
-          <EditButton hideText size="small" recordItemId={record.id} />
-          <DeleteButton hideText size="small" recordItemId={record.id} />
-        </Space>
-      ),
-    },
-  ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
+  const onFinish = (values: Record<string, unknown>) => {
+    if (!record?.id) return;
+    update(
+      { resource: "aesthetic_business_info", id: record.id as string, values },
+      { onSuccess: () => notification.success({ message: "נשמר בהצלחה" }) }
+    );
+  };
+
+  if (isLoading) return <Spin style={{ margin: 40 }} />;
 
   return (
-    <List
+    <Card
       title="מידע על העסק — קליניקת אסתטיקה"
-      createButtonProps={{ children: "הוסף סעיף" }}
-      headerButtons={({ defaultButtons }) => (
-        <>
-          {defaultButtons}
-          <Popover content={colVisibilityContent} title="הצג עמודות" trigger="click" placement="bottomLeft">
-            <Button icon={<SettingOutlined />}>עמודות</Button>
-          </Popover>
-        </>
-      )}
+      style={{ maxWidth: 720, margin: "0 auto" }}
     >
-      <Table
-        {...tableProps}
-        rowKey="id"
-        columns={columns as any}
-        scroll={{ x: "max-content" }}
-        onRow={(record: AestheticBusinessInfo) => ({
-          onClick: (e) => {
-            const target = e.target as HTMLElement;
-            if (target.closest("button") || target.closest(".ant-btn")) return;
-            navigate(`/aesthetic/business/edit/${record.id}`);
-          },
-          style: { cursor: "pointer" },
-        })}
-      />
-    </List>
+      <Form form={form} layout="vertical" onFinish={onFinish}>
+        <Form.Item label="שם העסק" name="business_name">
+          <Input placeholder="לדוגמה: קליניקת חנאנל" />
+        </Form.Item>
+        <Form.Item label="אודות" name="about">
+          <TextArea rows={5} placeholder="תיאור העסק, ערכים, מה מייחד אתכם..." />
+        </Form.Item>
+        <Form.Item label="שעות פעילות" name="working_hours">
+          <TextArea rows={3} placeholder="לדוגמה: ראשון–חמישי 09:00–19:00, שישי 09:00–14:00" />
+        </Form.Item>
+        <Form.Item label="כתובת העסק" name="address">
+          <Input placeholder="לדוגמה: רחוב הרצל 12, תל אביב" />
+        </Form.Item>
+        <Form.Item label="לינק להגעה בוויז" name="waze_link">
+          <Input placeholder="https://waze.com/ul/..." />
+        </Form.Item>
+        <Form.Item label="מספר טלפון" name="phone">
+          <Input placeholder="לדוגמה: 052-1234567" />
+        </Form.Item>
+        <Form.Item label="הערות" name="notes">
+          <TextArea rows={3} placeholder="כל מידע נוסף רלוונטי..." />
+        </Form.Item>
+        <Form.Item>
+          <Button type="primary" htmlType="submit" loading={isSaving} size="large">
+            שמור
+          </Button>
+        </Form.Item>
+      </Form>
+    </Card>
   );
 };

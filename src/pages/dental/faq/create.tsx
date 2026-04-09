@@ -1,16 +1,35 @@
 import { Create, useForm } from "@refinedev/antd";
-import { Form, Input, Switch } from "antd";
+import { useList } from "@refinedev/core";
+import { Form, Select, Input, Switch } from "antd";
+import type { DentalFAQ } from "../../../interfaces";
 
 const { TextArea } = Input;
 
 export const DentalFAQCreate = () => {
   const { formProps, saveButtonProps } = useForm({ resource: "dental_faq" });
 
+  const { data: faqData } = useList<DentalFAQ>({
+    resource: "dental_faq",
+    pagination: { pageSize: 500 },
+  });
+
+  const categoryOptions = [
+    ...new Set(
+      (faqData?.data || []).map((f) => f.category).filter(Boolean)
+    ),
+  ].map((c) => ({ label: c, value: c }));
+
   return (
     <Create title="הוספת שאלה — מרפאת שיניים" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ is_active: true }}>
         <Form.Item label="קטגוריה" name="category">
-          <Input placeholder='לדוגמה: שתלים, יישור שיניים, כתרים...' />
+          <Select
+            mode="tags"
+            options={categoryOptions}
+            placeholder='בחרי קטגוריה קיימת או הוסיפי חדשה...'
+            maxCount={1}
+            tokenSeparators={[","]}
+          />
         </Form.Item>
         <Form.Item label="שאלה" name="question" rules={[{ required: true, message: "חובה להכניס שאלה" }]}>
           <Input placeholder="מה השאלה הנפוצה?" />

@@ -92,8 +92,6 @@ function App() {
             {
               name: "aesthetic_business_info",
               list: "/aesthetic/business",
-              create: "/aesthetic/business/create",
-              edit: "/aesthetic/business/edit/:id",
               meta: { label: "מידע על העסק", parent: "aesthetic_section" },
             },
             {
@@ -139,8 +137,6 @@ function App() {
             {
               name: "dental_business_info",
               list: "/dental/business",
-              create: "/dental/business/create",
-              edit: "/dental/business/edit/:id",
               meta: { label: "מידע על העסק", parent: "dental_section" },
             },
             {
