@@ -5,9 +5,10 @@ import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Doctor } from "../../interfaces";
 
-type ColKey = "specialty" | "gender" | "experience" | "education" | "languages" | "working_hours" | "accepting_new_patients";
+type ColKey = "specialty" | "gender" | "experience" | "education" | "languages" | "working_hours" | "accepting_new_patients" | "business_association";
 
 const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
+  { key: "business_association",   label: "שיוך עסק",        defaultVisible: true  },
   { key: "specialty",              label: "תחום",            defaultVisible: true  },
   { key: "gender",                 label: "מגדר",            defaultVisible: true  },
   { key: "experience",             label: "ניסיון",          defaultVisible: true  },
@@ -44,6 +45,10 @@ export const DoctorList = () => {
 
   const columns = useMemo(() => [
     { key: "name", title: "שם", dataIndex: "name", width: 150 },
+    vis("business_association") && {
+      key: "business_association", title: "שיוך עסק", dataIndex: "business_association", width: 150,
+      render: (v: string) => v ? <Tag color={v === "מרפאת שיניים" ? "blue" : "purple"}>{v}</Tag> : null,
+    },
     vis("specialty") && { key: "specialty", title: "תחום", dataIndex: "specialty", width: 140 },
     vis("gender") && { key: "gender", title: "מגדר", dataIndex: "gender", width: 80 },
     vis("experience") && { key: "experience", title: "ניסיון", dataIndex: "experience", width: 130 },
@@ -74,8 +79,8 @@ export const DoctorList = () => {
 
   return (
     <List
-      title="רופאים"
-      createButtonProps={{ children: "הוסף רופא" }}
+      title="רופאים ומטפלים"
+      createButtonProps={{ children: "הוסף רופא/מטפל" }}
       headerButtons={({ defaultButtons }) => (
         <>
           {defaultButtons}

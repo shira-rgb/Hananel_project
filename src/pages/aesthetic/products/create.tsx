@@ -86,7 +86,10 @@ export const AestheticProductCreate = () => {
         <Form.Item label="שאלות ותשובות" name="faq">
           <TextArea rows={5} placeholder="האם זה כואב? כמה זמן זה מחזיק?..." />
         </Form.Item>
-        <Form.Item label="הסבר (מידע נוסף כללי)" name="description">
+        <Form.Item label="תופעות לוואי" name="side_effects">
+          <TextArea rows={4} placeholder="תופעות לוואי נפוצות, פחות שכיחות ונדירות..." />
+        </Form.Item>
+        <Form.Item label="מידע נוסף" name="description">
           <TextArea rows={4} placeholder="כל מידע נוסף שלא נכנס לשאר השדות..." />
         </Form.Item>
 

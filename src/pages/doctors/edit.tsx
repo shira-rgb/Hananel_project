@@ -10,7 +10,7 @@ export const DoctorEdit = () => {
 
   return (
     <Edit
-      title="עריכת רופא"
+      title="עריכת רופא / מטפל"
       saveButtonProps={saveButtonProps}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -25,9 +25,15 @@ export const DoctorEdit = () => {
     >
       <Form {...formProps} layout="vertical">
 
-        <Divider orientation="left">פרטי הרופא</Divider>
+        <Divider orientation="left">פרטי הרופא / המטפל</Divider>
         <Form.Item label="שם" name="name" rules={[{ required: true }]}>
           <Input />
+        </Form.Item>
+        <Form.Item label="שיוך עסק" name="business_association">
+          <Select allowClear>
+            <Select.Option value="מרפאת שיניים">מרפאת שיניים</Select.Option>
+            <Select.Option value="קליניקת אסתטיקה">קליניקת אסתטיקה</Select.Option>
+          </Select>
         </Form.Item>
         <Form.Item label="תחום" name="specialty">
           <Input />

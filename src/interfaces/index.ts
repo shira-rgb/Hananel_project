@@ -28,6 +28,7 @@ export interface AestheticProduct {
   common_myths?: string;
   faq?: string;
   contraindications?: string;
+  side_effects?: string;
   description?: string;
   price: number;
   show_in_pricelist: boolean;
@@ -39,6 +40,7 @@ export interface AestheticProduct {
 export interface AestheticFollowupMessage {
   id: string;
   product_id?: string;
+  treatment_types?: string[];
   message_text: string;
   delay_value: number;
   delay_unit: "hours" | "days" | "weeks";
@@ -74,6 +76,22 @@ export interface DentalProduct {
   id: string;
   name: string;
   treatment_type?: string;
+  doctors?: string;
+  how_it_works?: string;
+  indications?: string;
+  suitable_ages?: string;
+  contraindications?: string;
+  num_visits?: string;
+  treatment_duration?: string;
+  results_timeline?: string;
+  effect_duration?: string;
+  requires_anesthesia?: string;
+  recovery_time?: string;
+  post_treatment_instructions?: string;
+  when_to_contact_clinic?: string;
+  side_effects?: string;
+  important_info?: string;
+  faq?: string;
   description?: string;
   price: number;
   show_in_pricelist: boolean;
@@ -85,6 +103,7 @@ export interface DentalProduct {
 export interface DentalFollowupMessage {
   id: string;
   product_id?: string;
+  treatment_types?: string[];
   message_text: string;
   delay_value: number;
   delay_unit: "hours" | "days" | "weeks";
@@ -162,6 +181,7 @@ export interface Doctor {
   accepting_new_patients?: boolean;
   working_hours?: string;
   additional_info?: string;
+  business_association?: string;
   consultation_description?: string;
   consultation_schedule?: string;
   consultation_cost?: string;

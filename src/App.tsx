@@ -191,7 +191,7 @@ function App() {
               list: "/doctors",
               create: "/doctors/create",
               edit: "/doctors/edit/:id",
-              meta: { label: "👨‍⚕️ רופאים" },
+              meta: { label: "👨‍⚕️ רופאים ומטפלים" },
             },
           ]}
           options={{ syncWithLocation: true, warnWhenUnsavedChanges: true }}

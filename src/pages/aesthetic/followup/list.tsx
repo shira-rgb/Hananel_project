@@ -6,12 +6,13 @@ import { useNavigate } from "react-router-dom";
 import type { AestheticFollowupMessage } from "../../../interfaces";
 import { delayUnitLabel } from "../../../utils/formatters";
 
-type ColKey = "message_text" | "delay" | "is_active";
+type ColKey = "treatment_types" | "message_text" | "delay" | "is_active";
 
 const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
-  { key: "message_text", label: "תוכן ההודעה", defaultVisible: true },
-  { key: "delay",        label: "שליחה",        defaultVisible: true },
-  { key: "is_active",    label: "פעיל",          defaultVisible: true },
+  { key: "treatment_types", label: "סוגי טיפול",   defaultVisible: true },
+  { key: "message_text",    label: "תוכן ההודעה", defaultVisible: true },
+  { key: "delay",           label: "שליחה",        defaultVisible: true },
+  { key: "is_active",       label: "פעיל",          defaultVisible: true },
 ];
 
 export const AestheticFollowupList = () => {
@@ -44,6 +45,12 @@ export const AestheticFollowupList = () => {
     {
       key: "product", title: "מוצר", dataIndex: ["aesthetic_products", "name"],
       render: (name: string) => name ? <Tag color="purple">{name}</Tag> : <Tag>כללי</Tag>,
+    },
+    vis("treatment_types") && {
+      key: "treatment_types", title: "סוגי טיפול", dataIndex: "treatment_types",
+      render: (types: string[]) => types?.length
+        ? <>{types.map((t) => <Tag key={t} color="purple" style={{ marginBottom: 2 }}>{t}</Tag>)}</>
+        : null,
     },
     vis("message_text") && {
       key: "message_text", title: "תוכן ההודעה", dataIndex: "message_text",

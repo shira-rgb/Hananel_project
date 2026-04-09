@@ -101,7 +101,10 @@ export const AestheticProductEdit = () => {
         <Form.Item label="שאלות ותשובות" name="faq">
           <TextArea rows={5} />
         </Form.Item>
-        <Form.Item label="הסבר (מידע נוסף כללי)" name="description">
+        <Form.Item label="תופעות לוואי" name="side_effects">
+          <TextArea rows={4} />
+        </Form.Item>
+        <Form.Item label="מידע נוסף" name="description">
           <TextArea rows={4} />
         </Form.Item>
 

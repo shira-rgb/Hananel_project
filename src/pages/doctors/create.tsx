@@ -7,12 +7,18 @@ export const DoctorCreate = () => {
   const { formProps, saveButtonProps } = useForm({ resource: "doctors" });
 
   return (
-    <Create title="הוספת רופא" saveButtonProps={saveButtonProps}>
+    <Create title="הוספת רופא / מטפל" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ accepting_new_patients: true }}>
 
-        <Divider orientation="left">פרטי הרופא</Divider>
+        <Divider orientation="left">פרטי הרופא / המטפל</Divider>
         <Form.Item label="שם" name="name" rules={[{ required: true, message: "חובה להכניס שם" }]}>
           <Input placeholder='לדוגמה: ד"ר כהן מירב' />
+        </Form.Item>
+        <Form.Item label="שיוך עסק" name="business_association">
+          <Select placeholder="בחרי עסק" allowClear>
+            <Select.Option value="מרפאת שיניים">מרפאת שיניים</Select.Option>
+            <Select.Option value="קליניקת אסתטיקה">קליניקת אסתטיקה</Select.Option>
+          </Select>
         </Form.Item>
         <Form.Item label="תחום" name="specialty">
           <Input placeholder="לדוגמה: אסתטיקה, שיניים, פה ולסת..." />

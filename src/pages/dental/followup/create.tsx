@@ -14,11 +14,26 @@ export const DentalFollowupCreate = () => {
     filters: [{ field: "is_active", operator: "eq", value: true }],
   });
 
+  const { selectProps: treatmentTypeSelectProps } = useSelect<DentalProduct>({
+    resource: "dental_products",
+    optionLabel: "name",
+    optionValue: "name",
+    filters: [{ field: "is_active", operator: "eq", value: true }],
+  });
+
   return (
     <Create title="הוספת הודעת פולואפ — מרפאת שיניים" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ is_active: true, delay_value: 1, delay_unit: "days" }}>
         <Form.Item label="טיפול מקושר" name="product_id">
           <Select {...productSelectProps} placeholder="בחר טיפול (אופציונלי)" allowClear />
+        </Form.Item>
+        <Form.Item label="סוגי טיפול (בחירה מרובה)" name="treatment_types">
+          <Select
+            {...treatmentTypeSelectProps}
+            mode="multiple"
+            placeholder="בחרי סוגי טיפול רלוונטיים להודעה זו..."
+            allowClear
+          />
         </Form.Item>
         <Form.Item label="תוכן ההודעה" name="message_text" rules={[{ required: true, message: "חובה להכניס תוכן" }]}>
           <TextArea rows={5} placeholder="שלום {שם_לקוח}, רצינו לוודא שהכל בסדר אחרי הטיפול..." />

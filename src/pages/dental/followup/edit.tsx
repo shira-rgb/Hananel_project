@@ -14,11 +14,25 @@ export const DentalFollowupEdit = () => {
     filters: [{ field: "is_active", operator: "eq", value: true }],
   });
 
+  const { selectProps: treatmentTypeSelectProps } = useSelect<DentalProduct>({
+    resource: "dental_products",
+    optionLabel: "name",
+    optionValue: "name",
+    filters: [{ field: "is_active", operator: "eq", value: true }],
+  });
+
   return (
     <Edit title="עריכת הודעת פולואפ — מרפאת שיניים" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item label="טיפול מקושר" name="product_id">
           <Select {...productSelectProps} allowClear />
+        </Form.Item>
+        <Form.Item label="סוגי טיפול (בחירה מרובה)" name="treatment_types">
+          <Select
+            {...treatmentTypeSelectProps}
+            mode="multiple"
+            allowClear
+          />
         </Form.Item>
         <Form.Item label="תוכן ההודעה" name="message_text" rules={[{ required: true }]}>
           <TextArea rows={5} />

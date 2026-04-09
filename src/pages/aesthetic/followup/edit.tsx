@@ -14,11 +14,25 @@ export const AestheticFollowupEdit = () => {
     filters: [{ field: "is_active", operator: "eq", value: true }],
   });
 
+  const { selectProps: treatmentTypeSelectProps } = useSelect<AestheticProduct>({
+    resource: "aesthetic_products",
+    optionLabel: "name",
+    optionValue: "name",
+    filters: [{ field: "is_active", operator: "eq", value: true }],
+  });
+
   return (
     <Edit title="עריכת הודעת פולואפ — אסתטיקה" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item label="מוצר מקושר" name="product_id">
           <Select {...productSelectProps} allowClear />
+        </Form.Item>
+        <Form.Item label="סוגי טיפול (בחירה מרובה)" name="treatment_types">
+          <Select
+            {...treatmentTypeSelectProps}
+            mode="multiple"
+            allowClear
+          />
         </Form.Item>
         <Form.Item label="תוכן ההודעה" name="message_text" rules={[{ required: true }]}>
           <TextArea rows={5} />

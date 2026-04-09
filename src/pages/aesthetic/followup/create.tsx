@@ -14,6 +14,13 @@ export const AestheticFollowupCreate = () => {
     filters: [{ field: "is_active", operator: "eq", value: true }],
   });
 
+  const { selectProps: treatmentTypeSelectProps } = useSelect<AestheticProduct>({
+    resource: "aesthetic_products",
+    optionLabel: "name",
+    optionValue: "name",
+    filters: [{ field: "is_active", operator: "eq", value: true }],
+  });
+
   return (
     <Create title="הוספת הודעת פולואפ — אסתטיקה" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ is_active: true, delay_value: 1, delay_unit: "days" }}>
@@ -21,6 +28,14 @@ export const AestheticFollowupCreate = () => {
           <Select
             {...productSelectProps}
             placeholder="בחר מוצר (אופציונלי)"
+            allowClear
+          />
+        </Form.Item>
+        <Form.Item label="סוגי טיפול (בחירה מרובה)" name="treatment_types">
+          <Select
+            {...treatmentTypeSelectProps}
+            mode="multiple"
+            placeholder="בחרי סוגי טיפול רלוונטיים להודעה זו..."
             allowClear
           />
         </Form.Item>
