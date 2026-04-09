@@ -37,7 +37,7 @@ export const DentalProductList = () => {
       )}
     >
       <Table {...tableProps} rowKey="id" scroll={{ x: "max-content" }}>
-        <Table.Column title="מוצר" dataIndex="name" width={180} />
+        <Table.Column title="מוצר" dataIndex="name" width={110} />
         <Table.Column title="סוג טיפול" dataIndex="treatment_type" width={150} />
         <Table.Column
           title="הסבר"
