@@ -9,8 +9,11 @@ export const DentalProductEdit = () => {
   return (
     <Edit title="עריכת מוצר/טיפול — מרפאת שיניים" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        <Form.Item label="שם מוצר/טיפול" name="name" rules={[{ required: true }]}>
+        <Form.Item label="מוצר" name="name" rules={[{ required: true }]}>
           <Input />
+        </Form.Item>
+        <Form.Item label="סוג טיפול" name="treatment_type">
+          <Input placeholder="לדוגמה: ציפוי קרמי, השתלה בסיסית..." />
         </Form.Item>
         <Form.Item label="הסבר" name="description">
           <TextArea rows={4} />

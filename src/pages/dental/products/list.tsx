@@ -37,8 +37,14 @@ export const DentalProductList = () => {
       )}
     >
       <Table {...tableProps} rowKey="id">
-        <Table.Column title="שם מוצר/טיפול" dataIndex="name" />
-        <Table.Column title="הסבר" dataIndex="description" ellipsis />
+        <Table.Column title="מוצר" dataIndex="name" width={180} />
+        <Table.Column title="סוג טיפול" dataIndex="treatment_type" width={150} />
+        <Table.Column
+          title="הסבר"
+          dataIndex="description"
+          ellipsis
+          width={260}
+        />
         <Table.Column title="מחיר" dataIndex="price" render={(p: number) => formatPrice(p)} width={120} />
         <Table.Column
           title="במחירון"

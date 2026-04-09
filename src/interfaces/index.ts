@@ -13,6 +13,7 @@ export interface AestheticMedia {
 export interface AestheticProduct {
   id: string;
   name: string;
+  treatment_type?: string;
   description?: string;
   price: number;
   show_in_pricelist: boolean;
@@ -58,6 +59,7 @@ export interface DentalMedia {
 export interface DentalProduct {
   id: string;
   name: string;
+  treatment_type?: string;
   description?: string;
   price: number;
   show_in_pricelist: boolean;

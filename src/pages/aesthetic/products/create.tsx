@@ -9,8 +9,11 @@ export const AestheticProductCreate = () => {
   return (
     <Create title="הוספת מוצר — אסתטיקה" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ show_in_pricelist: true, is_active: true }}>
-        <Form.Item label="שם מוצר" name="name" rules={[{ required: true, message: "חובה להכניס שם" }]}>
+        <Form.Item label="מוצר" name="name" rules={[{ required: true, message: "חובה להכניס שם" }]}>
           <Input placeholder="לדוגמה: בוטוקס, פילר, מזותרפיה..." />
+        </Form.Item>
+        <Form.Item label="סוג טיפול" name="treatment_type">
+          <Input placeholder="לדוגמה: שני איזורים, אזור אחד..." />
         </Form.Item>
         <Form.Item label="הסבר" name="description">
           <TextArea rows={4} placeholder="הסבר על המוצר לשימוש הבוט..." />

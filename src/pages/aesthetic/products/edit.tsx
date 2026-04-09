@@ -9,8 +9,11 @@ export const AestheticProductEdit = () => {
   return (
     <Edit title="עריכת מוצר — אסתטיקה" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        <Form.Item label="שם מוצר" name="name" rules={[{ required: true }]}>
+        <Form.Item label="מוצר" name="name" rules={[{ required: true }]}>
           <Input />
+        </Form.Item>
+        <Form.Item label="סוג טיפול" name="treatment_type">
+          <Input placeholder="לדוגמה: שני איזורים, אזור אחד..." />
         </Form.Item>
         <Form.Item label="הסבר" name="description">
           <TextArea rows={4} />
