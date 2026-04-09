@@ -159,10 +159,13 @@ export interface Doctor {
   experience?: string;
   education?: string;
   languages?: string;
-  clinic_branch?: string;
   accepting_new_patients?: boolean;
   working_hours?: string;
   additional_info?: string;
+  consultation_description?: string;
+  consultation_schedule?: string;
+  consultation_cost?: string;
+  consultation_notes?: string;
   created_at: string;
   updated_at: string;
 }

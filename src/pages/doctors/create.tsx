@@ -1,5 +1,5 @@
 import { Create, useForm } from "@refinedev/antd";
-import { Form, Input, Select, Switch } from "antd";
+import { Form, Input, Select, Switch, Divider } from "antd";
 
 const { TextArea } = Input;
 
@@ -9,6 +9,8 @@ export const DoctorCreate = () => {
   return (
     <Create title="הוספת רופא" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ accepting_new_patients: true }}>
+
+        <Divider orientation="left">פרטי הרופא</Divider>
         <Form.Item label="שם" name="name" rules={[{ required: true, message: "חובה להכניס שם" }]}>
           <Input placeholder='לדוגמה: ד"ר כהן מירב' />
         </Form.Item>
@@ -31,9 +33,6 @@ export const DoctorCreate = () => {
         <Form.Item label="שפות" name="languages">
           <Input placeholder="לדוגמה: עברית, אנגלית, ערבית" />
         </Form.Item>
-        <Form.Item label="קליניקה / סניף" name="clinic_branch">
-          <Input placeholder="לדוגמה: סניף תל אביב" />
-        </Form.Item>
         <Form.Item label="ימים ושעות פעילות" name="working_hours">
           <TextArea rows={3} placeholder="לדוגמה: ראשון–חמישי 09:00–18:00, שישי 09:00–13:00" />
         </Form.Item>
@@ -41,8 +40,23 @@ export const DoctorCreate = () => {
           <Switch checkedChildren="כן" unCheckedChildren="לא" />
         </Form.Item>
         <Form.Item label="מידע נוסף" name="additional_info">
-          <TextArea rows={5} placeholder="כל מידע רלוונטי נוסף — התמחויות, אישורים, הערות..." />
+          <TextArea rows={4} placeholder="כל מידע רלוונטי נוסף — התמחויות, אישורים, הערות..." />
         </Form.Item>
+
+        <Divider orientation="left">חוות דעת — במידה ורלוונטי</Divider>
+        <Form.Item label="הסבר על החוות דעת" name="consultation_description">
+          <TextArea rows={3} placeholder="במה מתמקדת חוות הדעת, מה כוללת הפגישה..." />
+        </Form.Item>
+        <Form.Item label="לוחות זמנים" name="consultation_schedule">
+          <TextArea rows={2} placeholder="מועדים זמינים לחוות דעת..." />
+        </Form.Item>
+        <Form.Item label="עלות" name="consultation_cost">
+          <Input placeholder="לדוגמה: 500 ₪, כלול בעלות הטיפול..." />
+        </Form.Item>
+        <Form.Item label="מידע נוסף — חוות דעת" name="consultation_notes">
+          <TextArea rows={3} placeholder="כל מידע נוסף לגבי חוות הדעת..." />
+        </Form.Item>
+
       </Form>
     </Create>
   );

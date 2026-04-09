@@ -26,14 +26,16 @@ export const DoctorList = () => {
           style: { cursor: "pointer" },
         })}
       >
-        <Table.Column title="שם" dataIndex="name" width={140} />
+        <Table.Column title="שם" dataIndex="name" width={150} />
         <Table.Column title="תחום" dataIndex="specialty" width={140} />
         <Table.Column title="מגדר" dataIndex="gender" width={80} />
-        <Table.Column title="ניסיון" dataIndex="experience" width={120} />
+        <Table.Column title="ניסיון" dataIndex="experience" width={130} />
         <Table.Column title="השכלה" dataIndex="education" width={160} />
         <Table.Column title="שפות" dataIndex="languages" width={130} />
-        <Table.Column title="קליניקה / סניף" dataIndex="clinic_branch" width={130} />
-        <Table.Column title="ימים ושעות" dataIndex="working_hours" width={160}
+        <Table.Column
+          title="ימים ושעות"
+          dataIndex="working_hours"
+          width={160}
           render={(text: string) => (
             <div style={{ maxWidth: 160, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={text}>
               {text}

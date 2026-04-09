@@ -1,5 +1,5 @@
 import { Edit, useForm, DeleteButton } from "@refinedev/antd";
-import { Form, Input, Select, Switch } from "antd";
+import { Form, Input, Select, Switch, Divider } from "antd";
 import { useNavigate } from "react-router-dom";
 
 const { TextArea } = Input;
@@ -24,6 +24,8 @@ export const DoctorEdit = () => {
       )}
     >
       <Form {...formProps} layout="vertical">
+
+        <Divider orientation="left">פרטי הרופא</Divider>
         <Form.Item label="שם" name="name" rules={[{ required: true }]}>
           <Input />
         </Form.Item>
@@ -46,9 +48,6 @@ export const DoctorEdit = () => {
         <Form.Item label="שפות" name="languages">
           <Input />
         </Form.Item>
-        <Form.Item label="קליניקה / סניף" name="clinic_branch">
-          <Input />
-        </Form.Item>
         <Form.Item label="ימים ושעות פעילות" name="working_hours">
           <TextArea rows={3} />
         </Form.Item>
@@ -56,8 +55,23 @@ export const DoctorEdit = () => {
           <Switch checkedChildren="כן" unCheckedChildren="לא" />
         </Form.Item>
         <Form.Item label="מידע נוסף" name="additional_info">
-          <TextArea rows={5} />
+          <TextArea rows={4} />
         </Form.Item>
+
+        <Divider orientation="left">חוות דעת — במידה ורלוונטי</Divider>
+        <Form.Item label="הסבר על החוות דעת" name="consultation_description">
+          <TextArea rows={3} />
+        </Form.Item>
+        <Form.Item label="לוחות זמנים" name="consultation_schedule">
+          <TextArea rows={2} />
+        </Form.Item>
+        <Form.Item label="עלות" name="consultation_cost">
+          <Input />
+        </Form.Item>
+        <Form.Item label="מידע נוסף — חוות דעת" name="consultation_notes">
+          <TextArea rows={3} />
+        </Form.Item>
+
       </Form>
     </Edit>
   );
