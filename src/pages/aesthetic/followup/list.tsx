@@ -9,7 +9,7 @@ import { delayUnitLabel } from "../../../utils/formatters";
 type ColKey = "treatment_types" | "message_text" | "delay" | "is_active";
 
 const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
-  { key: "treatment_types", label: "סוגי טיפול",   defaultVisible: true },
+  { key: "treatment_types", label: "מוצר מקושר",   defaultVisible: true },
   { key: "message_text",    label: "תוכן ההודעה", defaultVisible: true },
   { key: "delay",           label: "שליחה",        defaultVisible: true },
   { key: "is_active",       label: "פעיל",          defaultVisible: true },
@@ -19,7 +19,6 @@ export const AestheticFollowupList = () => {
   const navigate = useNavigate();
   const { tableProps } = useTable<AestheticFollowupMessage>({
     resource: "aesthetic_followup_messages",
-    meta: { select: "*, aesthetic_products(name)" },
     sorters: { initial: [{ field: "created_at", order: "desc" }] },
   });
 
@@ -42,15 +41,11 @@ export const AestheticFollowupList = () => {
   );
 
   const columns = useMemo(() => [
-    {
-      key: "product", title: "מוצר", dataIndex: ["aesthetic_products", "name"],
-      render: (name: string) => name ? <Tag color="purple">{name}</Tag> : <Tag>כללי</Tag>,
-    },
     vis("treatment_types") && {
-      key: "treatment_types", title: "סוגי טיפול", dataIndex: "treatment_types",
+      key: "treatment_types", title: "מוצר מקושר", dataIndex: "treatment_types",
       render: (types: string[]) => types?.length
         ? <>{types.map((t) => <Tag key={t} color="purple" style={{ marginBottom: 2 }}>{t}</Tag>)}</>
-        : null,
+        : <Tag>כללי</Tag>,
     },
     vis("message_text") && {
       key: "message_text", title: "תוכן ההודעה", dataIndex: "message_text",

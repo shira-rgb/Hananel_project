@@ -1,4 +1,5 @@
-import { Create, useForm, useSelect } from "@refinedev/antd";
+import { Create, useForm } from "@refinedev/antd";
+import { useList } from "@refinedev/core";
 import { Form, Input, InputNumber, Select, Switch, Space } from "antd";
 import type { DentalProduct } from "../../../interfaces";
 
@@ -7,31 +8,25 @@ const { TextArea } = Input;
 export const DentalFollowupCreate = () => {
   const { formProps, saveButtonProps } = useForm({ resource: "dental_followup_messages" });
 
-  const { selectProps: productSelectProps } = useSelect<DentalProduct>({
+  const { data: productsData } = useList<DentalProduct>({
     resource: "dental_products",
-    optionLabel: "name",
-    optionValue: "id",
     filters: [{ field: "is_active", operator: "eq", value: true }],
+    pagination: { pageSize: 100 },
   });
 
-  const { selectProps: treatmentTypeSelectProps } = useSelect<DentalProduct>({
-    resource: "dental_products",
-    optionLabel: "name",
-    optionValue: "name",
-    filters: [{ field: "is_active", operator: "eq", value: true }],
+  const productOptions = (productsData?.data || []).map((p) => {
+    const label = p.treatment_type ? `${p.name} — ${p.treatment_type}` : p.name;
+    return { label, value: label };
   });
 
   return (
     <Create title="הוספת הודעת פולואפ — מרפאת שיניים" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ is_active: true, delay_value: 1, delay_unit: "days" }}>
-        <Form.Item label="טיפול מקושר" name="product_id">
-          <Select {...productSelectProps} placeholder="בחר טיפול (אופציונלי)" allowClear />
-        </Form.Item>
-        <Form.Item label="סוגי טיפול (בחירה מרובה)" name="treatment_types">
+        <Form.Item label="טיפול מקושר (בחירה מרובה)" name="treatment_types">
           <Select
-            {...treatmentTypeSelectProps}
             mode="multiple"
-            placeholder="בחרי סוגי טיפול רלוונטיים להודעה זו..."
+            options={productOptions}
+            placeholder="בחרי טיפולים רלוונטיים להודעה זו..."
             allowClear
           />
         </Form.Item>

@@ -1,4 +1,5 @@
-import { Edit, useForm, useSelect } from "@refinedev/antd";
+import { Edit, useForm } from "@refinedev/antd";
+import { useList } from "@refinedev/core";
 import { Form, Input, InputNumber, Select, Switch, Space } from "antd";
 import type { DentalProduct } from "../../../interfaces";
 
@@ -7,30 +8,24 @@ const { TextArea } = Input;
 export const DentalFollowupEdit = () => {
   const { formProps, saveButtonProps } = useForm({ resource: "dental_followup_messages" });
 
-  const { selectProps: productSelectProps } = useSelect<DentalProduct>({
+  const { data: productsData } = useList<DentalProduct>({
     resource: "dental_products",
-    optionLabel: "name",
-    optionValue: "id",
     filters: [{ field: "is_active", operator: "eq", value: true }],
+    pagination: { pageSize: 100 },
   });
 
-  const { selectProps: treatmentTypeSelectProps } = useSelect<DentalProduct>({
-    resource: "dental_products",
-    optionLabel: "name",
-    optionValue: "name",
-    filters: [{ field: "is_active", operator: "eq", value: true }],
+  const productOptions = (productsData?.data || []).map((p) => {
+    const label = p.treatment_type ? `${p.name} — ${p.treatment_type}` : p.name;
+    return { label, value: label };
   });
 
   return (
     <Edit title="עריכת הודעת פולואפ — מרפאת שיניים" saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
-        <Form.Item label="טיפול מקושר" name="product_id">
-          <Select {...productSelectProps} allowClear />
-        </Form.Item>
-        <Form.Item label="סוגי טיפול (בחירה מרובה)" name="treatment_types">
+        <Form.Item label="טיפול מקושר (בחירה מרובה)" name="treatment_types">
           <Select
-            {...treatmentTypeSelectProps}
             mode="multiple"
+            options={productOptions}
             allowClear
           />
         </Form.Item>
