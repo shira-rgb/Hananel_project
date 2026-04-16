@@ -3,7 +3,6 @@ import { ThemedLayout, ThemedSider, useNotificationProvider } from "@refinedev/a
 import { dataProvider, liveProvider } from "@refinedev/supabase";
 import routerBindings, {
   DocumentTitleHandler,
-  NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import React from "react";
@@ -18,6 +17,7 @@ import { theme } from "./theme";
 import "./index.css";
 
 import { LoginPage } from "./pages/login";
+import { HomePage } from "./pages/home";
 
 // Aesthetic pages
 import { AestheticMediaList } from "./pages/aesthetic/media/list";
@@ -92,6 +92,11 @@ function App() {
           routerProvider={routerBindings}
           notificationProvider={useNotificationProvider}
           resources={[
+            {
+              name: "home",
+              list: "/",
+              meta: { label: "🏠 סקירה כללית" },
+            },
             // ── קליניקת אסתטיקה ──
             {
               name: "aesthetic_section",
@@ -240,7 +245,7 @@ function App() {
                 </Authenticated>
               }
             >
-              <Route index element={<NavigateToResource resource="aesthetic_media" />} />
+              <Route index element={<HomePage />} />
 
               {/* Doctors */}
               <Route path="/doctors" element={<DoctorList />} />

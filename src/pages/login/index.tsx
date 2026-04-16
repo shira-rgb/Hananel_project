@@ -19,7 +19,7 @@ export const LoginPage = () => {
     try {
       const result: any = await authProvider.login!({ username: "admin", password: pwd });
       if (result?.success) {
-        window.location.href = "/aesthetic/media";
+        window.location.href = "/";
       } else {
         setError("סיסמה שגויה, נסי שוב");
       }

@@ -17,8 +17,8 @@ export const authProvider: AuthProvider = {
         cleanPassword.toLowerCase() === "hananel2024")
     ) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify({ username: "admin" }));
-      setTimeout(() => { window.location.href = "/aesthetic/media"; }, 50);
-      return { success: true, redirectTo: "/aesthetic/media" };
+      setTimeout(() => { window.location.href = "/"; }, 50);
+      return { success: true, redirectTo: "/" };
     }
     return {
       success: false,
