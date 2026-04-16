@@ -39,8 +39,8 @@ export const AestheticFollowupEdit = () => {
           <Select
             style={{ maxWidth: 260 }}
             options={[
-              { label: "אחרי טיפול / פנייה", value: "after" },
-              { label: "לפני פגישה (תזכורת)", value: "before" },
+              { label: "הודעת פולואפ לאחר טיפול", value: "after" },
+              { label: "הודעת תזכורת לפני טיפול", value: "before" },
             ]}
           />
         </Form.Item>
@@ -49,28 +49,23 @@ export const AestheticFollowupEdit = () => {
           {({ getFieldValue }) => {
             const timing = getFieldValue("timing_type") || "after";
             return (
-              <Space size={16} align="start" wrap>
-                <Form.Item
-                  label={timing === "before" ? "שלח לפני" : "שלח אחרי"}
-                  name="delay_value"
-                  rules={[{ required: true }]}
-                >
-                  <InputNumber min={1} style={{ width: 100 }} />
-                </Form.Item>
-                <Form.Item name="delay_unit" label=" " rules={[{ required: true }]}>
-                  <Select
-                    style={{ width: 120 }}
-                    options={[
-                      { label: "שעות", value: "hours" },
-                      { label: "ימים", value: "days" },
-                      { label: "שבועות", value: "weeks" },
-                    ]}
-                  />
-                </Form.Item>
-                <span style={{ lineHeight: "32px", paddingTop: 30 }}>
-                  {timing === "before" ? "לפני הפגישה" : "אחרי הטיפול"}
-                </span>
-              </Space>
+              <Form.Item label={timing === "before" ? "שלח תזכורת לפני הטיפול" : "שלח פולואפ אחרי הטיפול"} required>
+                <Space.Compact>
+                  <Form.Item name="delay_value" rules={[{ required: true }]} noStyle>
+                    <InputNumber min={1} style={{ width: 100 }} />
+                  </Form.Item>
+                  <Form.Item name="delay_unit" rules={[{ required: true }]} noStyle>
+                    <Select
+                      style={{ width: 120 }}
+                      options={[
+                        { label: "שעות", value: "hours" },
+                        { label: "ימים", value: "days" },
+                        { label: "שבועות", value: "weeks" },
+                      ]}
+                    />
+                  </Form.Item>
+                </Space.Compact>
+              </Form.Item>
             );
           }}
         </Form.Item>
