@@ -54,10 +54,16 @@ export const DentalFollowupList = () => {
       ),
     },
     vis("delay") && {
-      key: "delay", title: "שליחה", width: 180,
-      render: (_: unknown, record: DentalFollowupMessage) => (
-        <Tag color="cyan">{record.delay_value} {delayUnitLabel(record.delay_unit)} אחרי טיפול</Tag>
-      ),
+      key: "delay", title: "שליחה", width: 220,
+      render: (_: unknown, record: DentalFollowupMessage) => {
+        const before = record.timing_type === "before";
+        return (
+          <Tag color={before ? "orange" : "cyan"}>
+            {record.delay_value} {delayUnitLabel(record.delay_unit)}{" "}
+            {before ? "לפני פגישה" : "אחרי טיפול"}
+          </Tag>
+        );
+      },
     },
     vis("is_active") && {
       key: "is_active", title: "פעיל", dataIndex: "is_active", width: 80,

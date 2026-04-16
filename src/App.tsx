@@ -69,6 +69,14 @@ import { DentalBusinessList } from "./pages/dental/business/list";
 import { DentalBusinessCreate } from "./pages/dental/business/create";
 import { DentalBusinessEdit } from "./pages/dental/business/edit";
 
+// Inquiries pages (daily tracking)
+import { AestheticInquiryList } from "./pages/aesthetic/inquiries/list";
+import { AestheticInquiryCreate } from "./pages/aesthetic/inquiries/create";
+import { AestheticInquiryEdit } from "./pages/aesthetic/inquiries/edit";
+import { DentalInquiryList } from "./pages/dental/inquiries/list";
+import { DentalInquiryCreate } from "./pages/dental/inquiries/create";
+import { DentalInquiryEdit } from "./pages/dental/inquiries/edit";
+
 function App() {
   return (
     <BrowserRouter>
@@ -123,6 +131,13 @@ function App() {
               meta: { label: "מדיה", parent: "aesthetic_section" },
             },
             {
+              name: "aesthetic_inquiries",
+              list: "/aesthetic/inquiries",
+              create: "/aesthetic/inquiries/create",
+              edit: "/aesthetic/inquiries/edit/:id",
+              meta: { label: "מעקב פניות", parent: "aesthetic_section" },
+            },
+            {
               name: "aesthetic_clients",
               list: "/aesthetic/clients",
               create: "/aesthetic/clients/create",
@@ -166,6 +181,13 @@ function App() {
               create: "/dental/media/create",
               edit: "/dental/media/edit/:id",
               meta: { label: "מדיה", parent: "dental_section" },
+            },
+            {
+              name: "dental_inquiries",
+              list: "/dental/inquiries",
+              create: "/dental/inquiries/create",
+              edit: "/dental/inquiries/edit/:id",
+              meta: { label: "מעקב פניות", parent: "dental_section" },
             },
             {
               name: "dental_clients",
@@ -242,6 +264,10 @@ function App() {
               <Route path="/aesthetic/clients/create" element={<AestheticClientCreate />} />
               <Route path="/aesthetic/clients/edit/:id" element={<AestheticClientEdit />} />
 
+              <Route path="/aesthetic/inquiries" element={<AestheticInquiryList />} />
+              <Route path="/aesthetic/inquiries/create" element={<AestheticInquiryCreate />} />
+              <Route path="/aesthetic/inquiries/edit/:id" element={<AestheticInquiryEdit />} />
+
               <Route path="/aesthetic/faq" element={<AestheticFAQList />} />
               <Route path="/aesthetic/faq/create" element={<AestheticFAQCreate />} />
               <Route path="/aesthetic/faq/edit/:id" element={<AestheticFAQEdit />} />
@@ -266,6 +292,10 @@ function App() {
               <Route path="/dental/clients" element={<DentalClientList />} />
               <Route path="/dental/clients/create" element={<DentalClientCreate />} />
               <Route path="/dental/clients/edit/:id" element={<DentalClientEdit />} />
+
+              <Route path="/dental/inquiries" element={<DentalInquiryList />} />
+              <Route path="/dental/inquiries/create" element={<DentalInquiryCreate />} />
+              <Route path="/dental/inquiries/edit/:id" element={<DentalInquiryEdit />} />
 
               <Route path="/dental/doctor" element={<DentalDoctorList />} />
               <Route path="/dental/doctor/create" element={<DentalDoctorCreate />} />

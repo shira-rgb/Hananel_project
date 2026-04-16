@@ -54,10 +54,16 @@ export const AestheticFollowupList = () => {
       ),
     },
     vis("delay") && {
-      key: "delay", title: "שליחה", width: 180,
-      render: (_: unknown, record: AestheticFollowupMessage) => (
-        <Tag color="blue">{record.delay_value} {delayUnitLabel(record.delay_unit)} אחרי טיפול</Tag>
-      ),
+      key: "delay", title: "שליחה", width: 220,
+      render: (_: unknown, record: AestheticFollowupMessage) => {
+        const before = record.timing_type === "before";
+        return (
+          <Tag color={before ? "orange" : "blue"}>
+            {record.delay_value} {delayUnitLabel(record.delay_unit)}{" "}
+            {before ? "לפני פגישה" : "אחרי טיפול"}
+          </Tag>
+        );
+      },
     },
     vis("is_active") && {
       key: "is_active", title: "פעיל", dataIndex: "is_active", width: 80,

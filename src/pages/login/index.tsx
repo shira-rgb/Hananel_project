@@ -1,20 +1,33 @@
-import { useLogin } from "@refinedev/core";
-import { Form, Input, Button, Card, Alert } from "antd";
+import { Input, Button, Card, Alert } from "antd";
 import { useState } from "react";
 import { LockOutlined } from "@ant-design/icons";
+import { authProvider } from "../../authProvider";
 
 export const LoginPage = () => {
-  const { mutate: login, isLoading } = useLogin();
   const [error, setError] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const onFinish = ({ password }: { password: string }) => {
+  const doLogin = async () => {
     setError("");
-    login(
-      { username: "admin", password },
-      {
-        onError: () => setError("סיסמה שגויה, נסי שוב"),
+    const pwd = password.trim();
+    if (!pwd) {
+      setError("חובה להכניס סיסמה");
+      return;
+    }
+    setLoading(true);
+    try {
+      const result: any = await authProvider.login!({ username: "admin", password: pwd });
+      if (result?.success) {
+        window.location.href = "/aesthetic/media";
+      } else {
+        setError("סיסמה שגויה, נסי שוב");
       }
-    );
+    } catch (e) {
+      setError("שגיאה בהתחברות");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -45,32 +58,29 @@ export const LoginPage = () => {
           <Alert type="error" message={error} style={{ marginBottom: 16 }} showIcon />
         )}
 
-        <Form layout="vertical" onFinish={onFinish} requiredMark={false}>
-          <Form.Item
-            label="סיסמה"
-            name="password"
-            rules={[{ required: true, message: "חובה להכניס סיסמה" }]}
-          >
-            <Input.Password
-              prefix={<LockOutlined />}
-              placeholder="הכניסי סיסמה"
-              size="large"
-              autoFocus
-            />
-          </Form.Item>
-          <Form.Item style={{ marginBottom: 0 }}>
-            <Button
-              type="primary"
-              htmlType="submit"
-              block
-              size="large"
-              loading={isLoading}
-              style={{ borderRadius: 8, height: 44, fontWeight: 600 }}
-            >
-              כניסה
-            </Button>
-          </Form.Item>
-        </Form>
+        <div style={{ marginBottom: 16 }}>
+          <label style={{ display: "block", marginBottom: 6, fontWeight: 500 }}>סיסמה</label>
+          <Input.Password
+            prefix={<LockOutlined />}
+            placeholder="הכניסי סיסמה"
+            size="large"
+            autoFocus
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            onPressEnter={doLogin}
+          />
+        </div>
+
+        <Button
+          type="primary"
+          onClick={doLogin}
+          block
+          size="large"
+          loading={loading}
+          style={{ borderRadius: 8, height: 44, fontWeight: 600 }}
+        >
+          כניסה
+        </Button>
       </Card>
     </div>
   );

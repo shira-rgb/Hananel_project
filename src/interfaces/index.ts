@@ -44,6 +44,7 @@ export interface AestheticFollowupMessage {
   message_text: string;
   delay_value: number;
   delay_unit: "hours" | "days" | "weeks";
+  timing_type: "after" | "before";
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -107,10 +108,37 @@ export interface DentalFollowupMessage {
   message_text: string;
   delay_value: number;
   delay_unit: "hours" | "days" | "weeks";
+  timing_type: "after" | "before";
   is_active: boolean;
   created_at: string;
   updated_at: string;
   dental_products?: { name: string };
+}
+
+export type InquiryStatus = "inquired" | "scheduled" | "callback_requested";
+
+export interface AestheticInquiry {
+  id: string;
+  inquiry_date: string;
+  full_name?: string;
+  phone?: string;
+  source?: string;
+  status: InquiryStatus;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DentalInquiry {
+  id: string;
+  inquiry_date: string;
+  full_name?: string;
+  phone?: string;
+  source?: string;
+  status: InquiryStatus;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
 }
 
 export interface DentalClient {
