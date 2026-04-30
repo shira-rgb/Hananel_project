@@ -32,6 +32,8 @@ import { AestheticFollowupEdit } from "./pages/aesthetic/followup/edit";
 import { AestheticClientList } from "./pages/aesthetic/clients/list";
 import { AestheticClientCreate } from "./pages/aesthetic/clients/create";
 import { AestheticClientEdit } from "./pages/aesthetic/clients/edit";
+import { AestheticContactsPage } from "./pages/aesthetic/contacts";
+import { AestheticLeadEdit } from "./pages/aesthetic/leads/edit";
 
 // Dental pages
 import { DentalMediaList } from "./pages/dental/media/list";
@@ -46,6 +48,8 @@ import { DentalFollowupEdit } from "./pages/dental/followup/edit";
 import { DentalClientList } from "./pages/dental/clients/list";
 import { DentalClientCreate } from "./pages/dental/clients/create";
 import { DentalClientEdit } from "./pages/dental/clients/edit";
+import { DentalContactsPage } from "./pages/dental/contacts";
+import { DentalLeadEdit } from "./pages/dental/leads/edit";
 import { DentalDoctorList } from "./pages/dental/doctor/list";
 import { DentalDoctorCreate } from "./pages/dental/doctor/create";
 import { DentalDoctorEdit } from "./pages/dental/doctor/edit";
@@ -143,6 +147,17 @@ function App() {
               meta: { label: "מעקב פניות", parent: "aesthetic_section" },
             },
             {
+              name: "aesthetic_contacts",
+              list: "/aesthetic/contacts",
+              meta: { label: "לידים ולקוחות", parent: "aesthetic_section" },
+            },
+            {
+              name: "aesthetic_leads",
+              list: "/aesthetic/contacts",
+              edit: "/aesthetic/leads/edit/:id",
+              meta: { label: "לידים", parent: "aesthetic_section", hide: true },
+            },
+            {
               name: "aesthetic_clients",
               list: "/aesthetic/clients",
               create: "/aesthetic/clients/create",
@@ -193,6 +208,17 @@ function App() {
               create: "/dental/inquiries/create",
               edit: "/dental/inquiries/edit/:id",
               meta: { label: "מעקב פניות", parent: "dental_section" },
+            },
+            {
+              name: "dental_contacts",
+              list: "/dental/contacts",
+              meta: { label: "לידים ולקוחות", parent: "dental_section" },
+            },
+            {
+              name: "dental_leads",
+              list: "/dental/contacts",
+              edit: "/dental/leads/edit/:id",
+              meta: { label: "לידים", parent: "dental_section", hide: true },
             },
             {
               name: "dental_clients",
@@ -265,6 +291,8 @@ function App() {
               <Route path="/aesthetic/followup/create" element={<AestheticFollowupCreate />} />
               <Route path="/aesthetic/followup/edit/:id" element={<AestheticFollowupEdit />} />
 
+              <Route path="/aesthetic/contacts" element={<AestheticContactsPage />} />
+              <Route path="/aesthetic/leads/edit/:id" element={<AestheticLeadEdit />} />
               <Route path="/aesthetic/clients" element={<AestheticClientList />} />
               <Route path="/aesthetic/clients/create" element={<AestheticClientCreate />} />
               <Route path="/aesthetic/clients/edit/:id" element={<AestheticClientEdit />} />
@@ -294,6 +322,8 @@ function App() {
               <Route path="/dental/followup/create" element={<DentalFollowupCreate />} />
               <Route path="/dental/followup/edit/:id" element={<DentalFollowupEdit />} />
 
+              <Route path="/dental/contacts" element={<DentalContactsPage />} />
+              <Route path="/dental/leads/edit/:id" element={<DentalLeadEdit />} />
               <Route path="/dental/clients" element={<DentalClientList />} />
               <Route path="/dental/clients/create" element={<DentalClientCreate />} />
               <Route path="/dental/clients/edit/:id" element={<DentalClientEdit />} />

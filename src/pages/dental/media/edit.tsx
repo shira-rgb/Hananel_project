@@ -1,6 +1,8 @@
 import { Edit, useForm } from "@refinedev/antd";
+import { useList } from "@refinedev/core";
 import { Form, Input, Select } from "antd";
 import { MediaUpload } from "../../../components/MediaUpload";
+import type { DentalProduct } from "../../../interfaces";
 
 const { TextArea } = Input;
 
@@ -8,9 +10,31 @@ export const DentalMediaEdit = () => {
   const { formProps, saveButtonProps, form, queryResult } = useForm({ resource: "dental_media" });
   const record = queryResult?.data?.data;
 
+  const { data: productsData } = useList<DentalProduct>({
+    resource: "dental_products",
+    filters: [{ field: "is_active", operator: "eq", value: true }],
+    pagination: { pageSize: 200 },
+    sorters: [{ field: "name", order: "asc" }],
+  });
+
+  const productOptions = (productsData?.data || []).map((p) => ({
+    label: p.treatment_type ? `${p.name} — ${p.treatment_type}` : p.name,
+    value: p.id,
+  }));
+
+  // AntD Select returns undefined when cleared. Refine update would skip undefined fields.
+  // Force null on optional fields so DB clears them.
+  const handleFinish = (values: Record<string, unknown>) => {
+    const cleaned: Record<string, unknown> = { ...values };
+    ["product_id", "usage_type", "description"].forEach((k) => {
+      if (cleaned[k] === undefined) cleaned[k] = null;
+    });
+    return formProps.onFinish?.(cleaned);
+  };
+
   return (
     <Edit title="עריכת מדיה — מרפאת שיניים" saveButtonProps={saveButtonProps}>
-      <Form {...formProps} layout="vertical">
+      <Form {...formProps} layout="vertical" onFinish={handleFinish}>
         <Form.Item label="קובץ" name="file_url" rules={[{ required: true, message: "חובה להעלות קובץ" }]}>
           <MediaUpload
             initialUrl={record?.file_url}
@@ -30,6 +54,19 @@ export const DentalMediaEdit = () => {
         <Form.Item name="file_type" hidden><Input /></Form.Item>
         <Form.Item name="mime_type" hidden><Input /></Form.Item>
         <Form.Item name="file_size_bytes" hidden><Input /></Form.Item>
+        <Form.Item
+          label="טיפול / מוצר מקושר"
+          name="product_id"
+          tooltip="בחירת טיפול/מוצר מהקטלוג. הסוכן ישתמש במדיה זו כשידובר על אותו טיפול."
+        >
+          <Select
+            options={productOptions}
+            placeholder="בחר/י טיפול/מוצר מהקטלוג..."
+            allowClear
+            showSearch
+            optionFilterProp="label"
+          />
+        </Form.Item>
         <Form.Item label="שימוש" name="usage_type">
           <Select
             options={[
