@@ -74,6 +74,7 @@ export const AestheticBusinessList = () => {
           <Descriptions.Item label="שעות פעילות" style={{ whiteSpace: "pre-wrap" }}>{record?.working_hours || "—"}</Descriptions.Item>
           <Descriptions.Item label="כתובת העסק">{record?.address || "—"}</Descriptions.Item>
           <Descriptions.Item label="לינק להגעה בוויז">{record?.waze_link || "—"}</Descriptions.Item>
+          <Descriptions.Item label="לינק לקביעת פגישה">{record?.booking_link || "—"}</Descriptions.Item>
           <Descriptions.Item label="מספר טלפון">{record?.phone || "—"}</Descriptions.Item>
           <Descriptions.Item label="הערות" style={{ whiteSpace: "pre-wrap" }}>{record?.notes || "—"}</Descriptions.Item>
         </Descriptions>
@@ -93,6 +94,9 @@ export const AestheticBusinessList = () => {
           </Form.Item>
           <Form.Item label="לינק להגעה בוויז" name="waze_link">
             <Input placeholder="https://waze.com/ul/..." />
+          </Form.Item>
+          <Form.Item label="לינק לקביעת פגישה" name="booking_link">
+            <Input placeholder="https://calendly.com/... או כל לינק לקביעת תור" />
           </Form.Item>
           <Form.Item label="מספר טלפון" name="phone">
             <Input placeholder="לדוגמה: 052-1234567" />

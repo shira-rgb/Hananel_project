@@ -7,6 +7,8 @@ export interface AestheticMedia {
   file_size_bytes?: number;
   description?: string;
   usage_type?: "product_explanation" | "client_example" | "other";
+  product_id?: string;
+  aesthetic_products?: { name: string; treatment_type?: string };
   created_at: string;
 }
 
@@ -44,6 +46,7 @@ export interface AestheticFollowupMessage {
   message_text: string;
   delay_value: number;
   delay_unit: "hours" | "days" | "weeks";
+  timing_type: "after" | "before";
   is_active: boolean;
   created_at: string;
   updated_at: string;
@@ -52,10 +55,59 @@ export interface AestheticFollowupMessage {
 
 export interface AestheticClient {
   id: string;
-  full_name: string;
+  first_name?: string;
+  last_name?: string;
+  full_name?: string;
+  normalized_phone?: string;
   phone?: string;
   email?: string;
   notes?: string;
+  is_bot_active?: boolean;
+  has_sent_photo?: boolean;
+  photo_url?: string;
+  last_treatment_date?: string;
+  last_treatment_type?: string;
+  source?: string;
+  arrival_source?: string;
+  concern?: string;
+  interested_treatment?: string;
+  number_of_visits?: number;
+  client_status?: string;
+  external_status?: string;
+  city?: string;
+  birthdate?: string;
+  gender?: string;
+  registration_date?: string;
+  followup_after_last_treatment?: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface AestheticLead {
+  id: string;
+  first_name?: string;
+  last_name?: string;
+  normalized_phone?: string;
+  email?: string;
+  is_bot_active?: boolean;
+  status?: string;
+  lead_status_he?: string;
+  source?: string;
+  arrival_source?: string;
+  concern?: string;
+  interested_treatment?: string;
+  has_sent_photo?: boolean;
+  photo_url?: string;
+  notes?: string;
+  tags?: string;
+  engagement_score?: number;
+  lead_value?: number;
+  pipeline?: string;
+  stage?: string;
+  assigned?: string;
+  campaign?: string;
+  ad_name?: string;
+  crm_status?: string;
   created_at: string;
   updated_at: string;
 }
@@ -69,6 +121,8 @@ export interface DentalMedia {
   file_size_bytes?: number;
   description?: string;
   usage_type?: "product_explanation" | "client_example" | "other";
+  product_id?: string;
+  dental_products?: { name: string; treatment_type?: string };
   created_at: string;
 }
 
@@ -107,18 +161,94 @@ export interface DentalFollowupMessage {
   message_text: string;
   delay_value: number;
   delay_unit: "hours" | "days" | "weeks";
+  timing_type: "after" | "before";
   is_active: boolean;
   created_at: string;
   updated_at: string;
   dental_products?: { name: string };
 }
 
+export type InquiryStatus = "inquired" | "scheduled" | "callback_requested";
+
+export interface AestheticInquiry {
+  id: string;
+  inquiry_date: string;
+  full_name?: string;
+  phone?: string;
+  source?: string;
+  status: InquiryStatus;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DentalInquiry {
+  id: string;
+  inquiry_date: string;
+  full_name?: string;
+  phone?: string;
+  source?: string;
+  status: InquiryStatus;
+  notes?: string;
+  created_at: string;
+  updated_at: string;
+}
+
 export interface DentalClient {
   id: string;
-  full_name: string;
+  first_name?: string;
+  last_name?: string;
+  full_name?: string;
+  normalized_phone?: string;
   phone?: string;
   email?: string;
   notes?: string;
+  is_bot_active?: boolean;
+  has_sent_photo?: boolean;
+  photo_url?: string;
+  last_treatment_date?: string;
+  last_treatment_type?: string;
+  source?: string;
+  arrival_source?: string;
+  concern?: string;
+  interested_treatment?: string;
+  number_of_visits?: number;
+  client_status?: string;
+  external_status?: string;
+  city?: string;
+  birthdate?: string;
+  gender?: string;
+  registration_date?: string;
+  followup_after_last_treatment?: boolean;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface DentalLead {
+  id: string;
+  first_name?: string;
+  last_name?: string;
+  normalized_phone?: string;
+  email?: string;
+  is_bot_active?: boolean;
+  status?: string;
+  lead_status_he?: string;
+  source?: string;
+  arrival_source?: string;
+  concern?: string;
+  interested_treatment?: string;
+  has_sent_photo?: boolean;
+  photo_url?: string;
+  notes?: string;
+  tags?: string;
+  engagement_score?: number;
+  lead_value?: number;
+  pipeline?: string;
+  stage?: string;
+  assigned?: string;
+  campaign?: string;
+  ad_name?: string;
+  crm_status?: string;
   created_at: string;
   updated_at: string;
 }
@@ -150,6 +280,7 @@ export interface AestheticBusinessInfo {
   working_hours?: string;
   address?: string;
   waze_link?: string;
+  booking_link?: string;
   phone?: string;
   notes?: string;
   created_at: string;
@@ -163,6 +294,7 @@ export interface DentalBusinessInfo {
   working_hours?: string;
   address?: string;
   waze_link?: string;
+  booking_link?: string;
   phone?: string;
   notes?: string;
   created_at: string;

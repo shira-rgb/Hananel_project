@@ -6,14 +6,15 @@ import { useNavigate } from "react-router-dom";
 import type { AestheticMedia } from "../../../interfaces";
 import { formatDate, usageTypeLabel } from "../../../utils/formatters";
 
-type ColKey = "file_name" | "file_type" | "usage_type" | "description" | "created_at";
+type ColKey = "file_name" | "file_type" | "product" | "usage_type" | "description" | "created_at";
 
 const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
-  { key: "file_name",   label: "שם קובץ", defaultVisible: true },
-  { key: "file_type",   label: "סוג",     defaultVisible: true },
-  { key: "usage_type",  label: "שימוש",   defaultVisible: true },
-  { key: "description", label: "הסבר",    defaultVisible: true },
-  { key: "created_at",  label: "תאריך",   defaultVisible: true },
+  { key: "file_name",   label: "שם קובץ",        defaultVisible: true },
+  { key: "file_type",   label: "סוג",            defaultVisible: true },
+  { key: "product",     label: "טיפול/מוצר",    defaultVisible: true },
+  { key: "usage_type",  label: "שימוש",          defaultVisible: true },
+  { key: "description", label: "הסבר",           defaultVisible: true },
+  { key: "created_at",  label: "תאריך",          defaultVisible: true },
 ];
 
 export const AestheticMediaList = () => {
@@ -21,6 +22,7 @@ export const AestheticMediaList = () => {
   const { tableProps } = useTable<AestheticMedia>({
     resource: "aesthetic_media",
     sorters: { initial: [{ field: "created_at", order: "desc" }] },
+    meta: { select: "*, aesthetic_products(name, treatment_type)" },
   });
 
   const [visibleCols, setVisibleCols] = useState<Set<ColKey>>(
@@ -62,6 +64,15 @@ export const AestheticMediaList = () => {
         type === "image"
           ? <Tag icon={<PictureOutlined />} color="purple">תמונה</Tag>
           : <Tag icon={<PlayCircleOutlined />} color="blue">סרטון</Tag>,
+    },
+    vis("product") && {
+      key: "product", title: "טיפול/מוצר",
+      render: (_: unknown, record: AestheticMedia) => {
+        const p = record.aesthetic_products;
+        if (!p?.name) return <Tag>—</Tag>;
+        const label = p.treatment_type ? `${p.name} — ${p.treatment_type}` : p.name;
+        return <Tag color="purple">{label}</Tag>;
+      },
     },
     vis("usage_type") && {
       key: "usage_type", title: "שימוש", dataIndex: "usage_type",

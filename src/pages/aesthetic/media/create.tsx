@@ -1,11 +1,25 @@
 import { Create, useForm } from "@refinedev/antd";
+import { useList } from "@refinedev/core";
 import { Form, Input, Select } from "antd";
 import { MediaUpload } from "../../../components/MediaUpload";
+import type { AestheticProduct } from "../../../interfaces";
 
 const { TextArea } = Input;
 
 export const AestheticMediaCreate = () => {
   const { formProps, saveButtonProps, form } = useForm({ resource: "aesthetic_media" });
+
+  const { data: productsData } = useList<AestheticProduct>({
+    resource: "aesthetic_products",
+    filters: [{ field: "is_active", operator: "eq", value: true }],
+    pagination: { pageSize: 200 },
+    sorters: [{ field: "name", order: "asc" }],
+  });
+
+  const productOptions = (productsData?.data || []).map((p) => ({
+    label: p.treatment_type ? `${p.name} — ${p.treatment_type}` : p.name,
+    value: p.id,
+  }));
 
   return (
     <Create title="הוספת מדיה — קליניקת אסתטיקה" saveButtonProps={saveButtonProps}>
@@ -31,6 +45,19 @@ export const AestheticMediaCreate = () => {
         <Form.Item name="file_type" hidden><Input /></Form.Item>
         <Form.Item name="mime_type" hidden><Input /></Form.Item>
         <Form.Item name="file_size_bytes" hidden><Input /></Form.Item>
+        <Form.Item
+          label="טיפול / מוצר מקושר"
+          name="product_id"
+          tooltip="בחירת טיפול/מוצר מהקטלוג. הסוכן ישתמש במדיה זו כשידובר על אותו טיפול."
+        >
+          <Select
+            options={productOptions}
+            placeholder="בחרי טיפול/מוצר מהקטלוג..."
+            allowClear
+            showSearch
+            optionFilterProp="label"
+          />
+        </Form.Item>
         <Form.Item label="שימוש" name="usage_type">
           <Select
             placeholder="למה משמש הקובץ?"
