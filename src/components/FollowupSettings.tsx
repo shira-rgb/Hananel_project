@@ -10,14 +10,18 @@ import {
   Space,
   Tooltip,
   message,
+  Input,
 } from "antd";
 import {
   ClockCircleOutlined,
   SaveOutlined,
   CheckCircleOutlined,
+  GiftOutlined,
 } from "@ant-design/icons";
 import { supabaseClient } from "../supabaseClient";
 import { delayUnitLabel } from "../utils/formatters";
+
+const { TextArea } = Input;
 
 type Business = "aesthetic" | "dental";
 type DelayUnit = "hours" | "days" | "weeks";
@@ -88,6 +92,51 @@ export function FollowupSettings({ business }: { business: Business }) {
   const palette = PALETTE[business];
   const productsResource = `${business}_products`;
   const followupResource = `${business}_followup_messages`;
+  const businessInfoResource = `${business}_business_info`;
+
+  const {
+    data: businessInfoData,
+    isLoading: loadingBusinessInfo,
+    refetch: refetchBusinessInfo,
+  } = useList<{ id: string; followup_incentive?: string }>({
+    resource: businessInfoResource,
+    pagination: { pageSize: 1 },
+    meta: { select: "id, followup_incentive" },
+  });
+
+  const businessInfoRow = businessInfoData?.data?.[0];
+
+  const [incentive, setIncentive] = useState<string>("");
+  const [incentiveDirty, setIncentiveDirty] = useState(false);
+  const [incentiveSaving, setIncentiveSaving] = useState(false);
+
+  useEffect(() => {
+    setIncentive(businessInfoRow?.followup_incentive || "");
+    setIncentiveDirty(false);
+  }, [businessInfoRow?.id, businessInfoRow?.followup_incentive]);
+
+  const saveIncentive = async () => {
+    if (!businessInfoRow?.id) {
+      message.error("לא נמצאה רשומת מידע על העסק");
+      return;
+    }
+    setIncentiveSaving(true);
+    try {
+      const { error } = await supabaseClient
+        .from(businessInfoResource)
+        .update({ followup_incentive: incentive })
+        .eq("id", businessInfoRow.id);
+      if (error) throw error;
+      message.success("הטבה נשמרה");
+      setIncentiveDirty(false);
+      refetchBusinessInfo();
+    } catch (e) {
+      const err = e as { message?: string };
+      message.error("שמירה נכשלה: " + (err?.message || ""));
+    } finally {
+      setIncentiveSaving(false);
+    }
+  };
 
   const { data: productsData, isLoading: loadingProducts } = useList<ProductRow>({
     resource: productsResource,
@@ -380,6 +429,73 @@ export function FollowupSettings({ business }: { business: Business }) {
             <HeroPill label="סה״כ טיפולים" value={products.length} />
             <HeroPill label="מוגדרו פולואפ" value={configuredCount} highlight />
           </Space>
+        </div>
+      </div>
+
+      {/* Incentive panel */}
+      <div
+        style={{
+          marginTop: 16,
+          background: "#fff",
+          borderRadius: 20,
+          padding: "20px 24px",
+          border: `1px solid ${palette.border}`,
+          boxShadow: "0 1px 0 rgba(0,0,0,0.02), 0 8px 28px -16px rgba(60,40,90,0.1)",
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            marginBottom: 6,
+          }}
+        >
+          <span
+            style={{
+              width: 32,
+              height: 32,
+              borderRadius: 10,
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: `${palette.primary}14`,
+              color: palette.primary,
+              fontSize: 16,
+            }}
+          >
+            <GiftOutlined />
+          </span>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontWeight: 600, color: palette.deep, fontSize: 15 }}>
+              הטבת ממליץ
+            </div>
+          </div>
+        </div>
+        <TextArea
+          value={incentive}
+          onChange={(e) => {
+            setIncentive(e.target.value);
+            setIncentiveDirty(true);
+          }}
+          placeholder="לדוגמה: 10% הנחה על הטיפול הבא בהזמנה השבוע..."
+          rows={3}
+          maxLength={500}
+          showCount
+          disabled={loadingBusinessInfo}
+          style={{ borderRadius: 10 }}
+        />
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
+          <Button
+            type="primary"
+            icon={<SaveOutlined />}
+            loading={incentiveSaving}
+            disabled={!incentiveDirty || loadingBusinessInfo}
+            onClick={saveIncentive}
+            style={{ background: palette.primary, borderColor: palette.primary }}
+          >
+            שמור הטבה
+          </Button>
         </div>
       </div>
 
