@@ -7,7 +7,7 @@ import routerBindings, {
 } from "@refinedev/react-router-v6";
 import React from "react";
 import { BrowserRouter, Navigate, Outlet, Route, Routes } from "react-router-dom";
-import { ConfigProvider } from "antd";
+import { ConfigProvider, App as AntdApp } from "antd";
 import heIL from "antd/locale/he_IL";
 import "@refinedev/antd/dist/reset.css";
 
@@ -89,6 +89,7 @@ function App() {
         locale={heIL}
         theme={theme}
       >
+        <AntdApp>
         <Refine
           dataProvider={dataProvider(supabaseClient)}
           liveProvider={liveProvider(supabaseClient)}
@@ -351,6 +352,7 @@ function App() {
           <UnsavedChangesNotifier />
           <DocumentTitleHandler />
         </Refine>
+        </AntdApp>
       </ConfigProvider>
     </BrowserRouter>
   );
