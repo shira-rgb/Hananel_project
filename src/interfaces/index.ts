@@ -283,6 +283,7 @@ export interface AestheticBusinessInfo {
   booking_link?: string;
   phone?: string;
   notes?: string;
+  followup_incentive?: string;
   created_at: string;
   updated_at: string;
 }
@@ -297,6 +298,7 @@ export interface DentalBusinessInfo {
   booking_link?: string;
   phone?: string;
   notes?: string;
+  followup_incentive?: string;
   created_at: string;
   updated_at: string;
 }
