@@ -94,45 +94,65 @@ export function FollowupSettings({ business }: { business: Business }) {
   const followupResource = `${business}_followup_messages`;
   const businessInfoResource = `${business}_business_info`;
 
-  const {
-    data: businessInfoData,
-    isLoading: loadingBusinessInfo,
-    refetch: refetchBusinessInfo,
-  } = useList<{ id: string; followup_incentive?: string }>({
-    resource: businessInfoResource,
-    pagination: { pageSize: 1 },
-    meta: { select: "id, followup_incentive" },
-  });
-
-  const businessInfoRow = businessInfoData?.data?.[0];
-
   const [incentive, setIncentive] = useState<string>("");
   const [incentiveDirty, setIncentiveDirty] = useState(false);
   const [incentiveSaving, setIncentiveSaving] = useState(false);
+  const [incentiveLoading, setIncentiveLoading] = useState(true);
+  const [businessInfoId, setBusinessInfoId] = useState<string | null>(null);
 
-  useEffect(() => {
-    setIncentive(businessInfoRow?.followup_incentive || "");
-    setIncentiveDirty(false);
-  }, [businessInfoRow?.id, businessInfoRow?.followup_incentive]);
-
-  const saveIncentive = async () => {
-    if (!businessInfoRow?.id) {
-      message.error("לא נמצאה רשומת מידע על העסק");
-      return;
-    }
-    setIncentiveSaving(true);
+  const loadIncentive = async () => {
+    setIncentiveLoading(true);
     try {
-      const { error } = await supabaseClient
+      const { data, error } = await supabaseClient
         .from(businessInfoResource)
-        .update({ followup_incentive: incentive })
-        .eq("id", businessInfoRow.id);
+        .select("id, followup_incentive")
+        .limit(1);
       if (error) throw error;
-      message.success("הטבה נשמרה");
-      setIncentiveDirty(false);
-      refetchBusinessInfo();
+      const row = data?.[0];
+      if (row) {
+        setBusinessInfoId(row.id);
+        setIncentive(row.followup_incentive || "");
+      }
     } catch (e) {
       const err = e as { message?: string };
-      message.error("שמירה נכשלה: " + (err?.message || ""));
+      // Likely the column doesn't exist yet — silently keep empty.
+      console.warn("incentive load failed:", err?.message);
+    } finally {
+      setIncentiveLoading(false);
+      setIncentiveDirty(false);
+    }
+  };
+
+  useEffect(() => {
+    loadIncentive();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [businessInfoResource]);
+
+  const saveIncentive = async () => {
+    setIncentiveSaving(true);
+    try {
+      let rowId = businessInfoId;
+      if (!rowId) {
+        const { data, error } = await supabaseClient
+          .from(businessInfoResource)
+          .insert({ followup_incentive: incentive })
+          .select("id")
+          .single();
+        if (error) throw error;
+        rowId = data?.id || null;
+        setBusinessInfoId(rowId);
+      } else {
+        const { error } = await supabaseClient
+          .from(businessInfoResource)
+          .update({ followup_incentive: incentive })
+          .eq("id", rowId);
+        if (error) throw error;
+      }
+      message.success("הטבה נשמרה");
+      setIncentiveDirty(false);
+    } catch (e) {
+      const err = e as { message?: string };
+      message.error("שמירה נכשלה: " + (err?.message || "ייתכן שהעמודה followup_incentive לא קיימת ב-DB"));
     } finally {
       setIncentiveSaving(false);
     }
@@ -481,20 +501,34 @@ export function FollowupSettings({ business }: { business: Business }) {
           placeholder="לדוגמה: 10% הנחה על הטיפול הבא בהזמנה השבוע..."
           rows={3}
           maxLength={500}
-          showCount
-          disabled={loadingBusinessInfo}
+          disabled={incentiveLoading}
           style={{ borderRadius: 10 }}
         />
-        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 10 }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginTop: 12,
+            gap: 12,
+          }}
+        >
+          <span style={{ fontSize: 12, color: "#8a8294" }}>
+            {incentive.length} / 500
+          </span>
           <Button
             type="primary"
             icon={<SaveOutlined />}
             loading={incentiveSaving}
-            disabled={!incentiveDirty || loadingBusinessInfo}
+            disabled={!incentiveDirty || incentiveLoading}
             onClick={saveIncentive}
-            style={{ background: palette.primary, borderColor: palette.primary }}
+            style={{
+              background: palette.primary,
+              borderColor: palette.primary,
+              color: "#fff",
+            }}
           >
-            שמור הטבה
+            <span style={{ color: "#fff" }}>שמור הטבה</span>
           </Button>
         </div>
       </div>
