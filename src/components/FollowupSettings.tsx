@@ -9,7 +9,7 @@ import {
   Empty,
   Space,
   Tooltip,
-  message,
+  App,
   Input,
 } from "antd";
 import {
@@ -89,6 +89,7 @@ const DEFAULT_PLACEHOLDER_TEXT =
   "[פולואפ אוטומטי — תוכן ההודעה נוצר על־פי שם הטיפול והפרטים שבמערכת]";
 
 export function FollowupSettings({ business }: { business: Business }) {
+  const { message, modal } = App.useApp();
   const palette = PALETTE[business];
   const productsResource = `${business}_products`;
   const followupResource = `${business}_followup_messages`;
@@ -132,27 +133,63 @@ export function FollowupSettings({ business }: { business: Business }) {
     setIncentiveSaving(true);
     try {
       let rowId = businessInfoId;
+      let savedValue: string | null = null;
       if (!rowId) {
         const { data, error } = await supabaseClient
           .from(businessInfoResource)
           .insert({ followup_incentive: incentive })
-          .select("id")
+          .select("id, followup_incentive")
           .single();
         if (error) throw error;
         rowId = data?.id || null;
+        savedValue = data?.followup_incentive ?? null;
         setBusinessInfoId(rowId);
       } else {
-        const { error } = await supabaseClient
+        const { data, error } = await supabaseClient
           .from(businessInfoResource)
           .update({ followup_incentive: incentive })
-          .eq("id", rowId);
+          .eq("id", rowId)
+          .select("id, followup_incentive")
+          .single();
         if (error) throw error;
+        savedValue = data?.followup_incentive ?? null;
       }
-      message.success("הטבה נשמרה");
       setIncentiveDirty(false);
+      modal.success({
+        title: "ההטבה נשמרה בהצלחה",
+        content: (
+          <div style={{ marginTop: 8 }}>
+            <div style={{ marginBottom: 8, color: "#555" }}>
+              ההטבה נשמרה במסד הנתונים והסוכן יושך אותה דינמית בהודעות הפולואפ.
+            </div>
+            <div
+              style={{
+                background: "#f6f3fb",
+                border: "1px solid #e6dff2",
+                borderRadius: 8,
+                padding: "10px 12px",
+                fontSize: 13,
+                color: "#3d2a52",
+                whiteSpace: "pre-wrap",
+              }}
+            >
+              {savedValue || "(ריק)"}
+            </div>
+          </div>
+        ),
+        okText: "סגור",
+        centered: true,
+      });
     } catch (e) {
       const err = e as { message?: string };
-      message.error("שמירה נכשלה: " + (err?.message || "ייתכן שהעמודה followup_incentive לא קיימת ב-DB"));
+      modal.error({
+        title: "שמירה נכשלה",
+        content:
+          err?.message ||
+          "ייתכן שהעמודה followup_incentive לא קיימת ב-DB או שאין הרשאה לכתיבה.",
+        okText: "סגור",
+        centered: true,
+      });
     } finally {
       setIncentiveSaving(false);
     }
