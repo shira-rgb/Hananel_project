@@ -159,9 +159,6 @@ export function FollowupSettings({ business }: { business: Business }) {
         title: "ההטבה נשמרה בהצלחה",
         content: (
           <div style={{ marginTop: 8 }}>
-            <div style={{ marginBottom: 8, color: "#555" }}>
-              ההטבה נשמרה במסד הנתונים והסוכן יושך אותה דינמית בהודעות הפולואפ.
-            </div>
             <div
               style={{
                 background: "#f6f3fb",
