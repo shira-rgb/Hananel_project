@@ -3,7 +3,6 @@ import { ThemedLayout, ThemedSider, useNotificationProvider } from "@refinedev/a
 import { dataProvider, liveProvider } from "@refinedev/supabase";
 import routerBindings, {
   DocumentTitleHandler,
-  NavigateToResource,
   UnsavedChangesNotifier,
 } from "@refinedev/react-router-v6";
 import React from "react";
@@ -14,11 +13,11 @@ import "@refinedev/antd/dist/reset.css";
 
 import { supabaseClient } from "./supabaseClient";
 import { authProvider } from "./authProvider";
-import { i18nProvider } from "./i18nProvider";
 import { theme } from "./theme";
 import "./index.css";
 
 import { LoginPage } from "./pages/login";
+import { HomePage } from "./pages/home";
 
 // Aesthetic pages
 import { AestheticMediaList } from "./pages/aesthetic/media/list";
@@ -74,6 +73,14 @@ import { DentalBusinessList } from "./pages/dental/business/list";
 import { DentalBusinessCreate } from "./pages/dental/business/create";
 import { DentalBusinessEdit } from "./pages/dental/business/edit";
 
+// Inquiries pages (daily tracking)
+import { AestheticInquiryList } from "./pages/aesthetic/inquiries/list";
+import { AestheticInquiryCreate } from "./pages/aesthetic/inquiries/create";
+import { AestheticInquiryEdit } from "./pages/aesthetic/inquiries/edit";
+import { DentalInquiryList } from "./pages/dental/inquiries/list";
+import { DentalInquiryCreate } from "./pages/dental/inquiries/create";
+import { DentalInquiryEdit } from "./pages/dental/inquiries/edit";
+
 function App() {
   return (
     <BrowserRouter>
@@ -89,8 +96,12 @@ function App() {
           authProvider={authProvider}
           routerProvider={routerBindings}
           notificationProvider={useNotificationProvider}
-          i18nProvider={i18nProvider}
           resources={[
+            {
+              name: "home",
+              list: "/",
+              meta: { label: "🏠 סקירה כללית" },
+            },
             // ── קליניקת אסתטיקה ──
             {
               name: "aesthetic_section",
@@ -128,6 +139,13 @@ function App() {
               create: "/aesthetic/media/create",
               edit: "/aesthetic/media/edit/:id",
               meta: { label: "מדיה", parent: "aesthetic_section" },
+            },
+            {
+              name: "aesthetic_inquiries",
+              list: "/aesthetic/inquiries",
+              create: "/aesthetic/inquiries/create",
+              edit: "/aesthetic/inquiries/edit/:id",
+              meta: { label: "מעקב פניות", parent: "aesthetic_section" },
             },
             {
               name: "aesthetic_contacts",
@@ -184,6 +202,13 @@ function App() {
               create: "/dental/media/create",
               edit: "/dental/media/edit/:id",
               meta: { label: "מדיה", parent: "dental_section" },
+            },
+            {
+              name: "dental_inquiries",
+              list: "/dental/inquiries",
+              create: "/dental/inquiries/create",
+              edit: "/dental/inquiries/edit/:id",
+              meta: { label: "מעקב פניות", parent: "dental_section" },
             },
             {
               name: "dental_contacts",
@@ -247,7 +272,7 @@ function App() {
                 </Authenticated>
               }
             >
-              <Route index element={<NavigateToResource resource="aesthetic_media" />} />
+              <Route index element={<HomePage />} />
 
               {/* Doctors */}
               <Route path="/doctors" element={<DoctorList />} />
@@ -272,6 +297,10 @@ function App() {
               <Route path="/aesthetic/clients" element={<AestheticClientList />} />
               <Route path="/aesthetic/clients/create" element={<AestheticClientCreate />} />
               <Route path="/aesthetic/clients/edit/:id" element={<AestheticClientEdit />} />
+
+              <Route path="/aesthetic/inquiries" element={<AestheticInquiryList />} />
+              <Route path="/aesthetic/inquiries/create" element={<AestheticInquiryCreate />} />
+              <Route path="/aesthetic/inquiries/edit/:id" element={<AestheticInquiryEdit />} />
 
               <Route path="/aesthetic/faq" element={<AestheticFAQList />} />
               <Route path="/aesthetic/faq/create" element={<AestheticFAQCreate />} />
@@ -299,6 +328,10 @@ function App() {
               <Route path="/dental/clients" element={<DentalClientList />} />
               <Route path="/dental/clients/create" element={<DentalClientCreate />} />
               <Route path="/dental/clients/edit/:id" element={<DentalClientEdit />} />
+
+              <Route path="/dental/inquiries" element={<DentalInquiryList />} />
+              <Route path="/dental/inquiries/create" element={<DentalInquiryCreate />} />
+              <Route path="/dental/inquiries/edit/:id" element={<DentalInquiryEdit />} />
 
               <Route path="/dental/doctor" element={<DentalDoctorList />} />
               <Route path="/dental/doctor/create" element={<DentalDoctorCreate />} />
