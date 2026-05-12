@@ -23,7 +23,7 @@ Simple auth — single shared password. No user table.
 
 ## Environment Variables
 ```
-VITE_SUPABASE_URL=https://pzkgvkzztrpzdpyhkggt.supabase.co
+VITE_SUPABASE_URL=https://vazyrvmdradzhdoqdmon.supabase.co
 VITE_SUPABASE_ANON_KEY=<anon key>
 VITE_DASHBOARD_PASSWORD=hananel2024
 ```
@@ -56,7 +56,7 @@ src/
         └── doctor/             # list, create, edit (פרופיל רופא)
 ```
 
-## Database Schema (Supabase project: pzkgvkzztrpzdpyhkggt)
+## Database Schema (Supabase project: vazyrvmdradzhdoqdmon)
 
 ### aesthetic_media
 | Column | Type | Notes |
