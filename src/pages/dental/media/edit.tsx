@@ -36,7 +36,7 @@ export const DentalMediaEdit = () => {
   // Force null on optional fields so DB clears them.
   const handleFinish = (values: Record<string, unknown>) => {
     const cleaned: Record<string, unknown> = { ...values };
-    ["product_id", "usage_type", "description"].forEach((k) => {
+    ["product_id", "usage_type", "description", "file_url"].forEach((k) => {
       if (cleaned[k] === undefined) cleaned[k] = null;
     });
     return formProps.onFinish?.(cleaned);
@@ -61,13 +61,7 @@ export const DentalMediaEdit = () => {
 
   const handleFileOnlyRemove = async (publicUrl?: string) => {
     await removeMediaFile(publicUrl).catch(() => undefined);
-    form.setFieldsValue({
-      file_url: undefined,
-      file_name: undefined,
-      file_type: undefined,
-      mime_type: undefined,
-      file_size_bytes: undefined,
-    });
+    form.setFieldsValue({ file_url: null });
     message.success("המדיה נמחקה");
   };
 
@@ -94,7 +88,7 @@ export const DentalMediaEdit = () => {
       )}
     >
       <Form {...formProps} layout="vertical" onFinish={handleFinish}>
-        <Form.Item label="קובץ" name="file_url" rules={[{ required: true, message: "חובה להעלות קובץ" }]}>
+        <Form.Item label="קובץ" name="file_url">
           <MediaUpload
             initialUrl={record?.file_url}
             initialFileName={record?.file_name}
