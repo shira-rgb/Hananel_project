@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Upload, Button, Progress, Alert, Typography } from "antd";
-import { UploadOutlined, CheckCircleOutlined } from "@ant-design/icons";
+import { useEffect, useState } from "react";
+import { Upload, Button, Progress, Alert, Popconfirm, Typography } from "antd";
+import { UploadOutlined, CheckCircleOutlined, DeleteOutlined } from "@ant-design/icons";
 import type { UploadFile, RcFile } from "antd/es/upload";
 import { supabaseClient } from "../supabaseClient";
 
@@ -20,15 +20,30 @@ interface MediaUploadProps {
   }) => void;
   initialUrl?: string;
   initialFileName?: string;
+  onFileRemove?: (publicUrl?: string) => Promise<void> | void;
 }
 
-export const MediaUpload = ({ onUploadComplete, initialUrl, initialFileName }: MediaUploadProps) => {
+export const MediaUpload = ({
+  onUploadComplete,
+  initialUrl,
+  initialFileName,
+  onFileRemove,
+}: MediaUploadProps) => {
   const [uploading, setUploading] = useState(false);
   const [progress, setProgress] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [removing, setRemoving] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<{ name: string; url: string } | null>(
     initialUrl && initialFileName ? { name: initialFileName, url: initialUrl } : null
   );
+
+  useEffect(() => {
+    if (initialUrl && initialFileName) {
+      setUploadedFile({ name: initialFileName, url: initialUrl });
+    } else {
+      setUploadedFile(null);
+    }
+  }, [initialUrl, initialFileName]);
 
   const validateFile = (file: RcFile): string | null => {
     const isImage = ALLOWED_IMAGE_TYPES.includes(file.type);
@@ -91,6 +106,22 @@ export const MediaUpload = ({ onUploadComplete, initialUrl, initialFileName }: M
     return false; // prevent default antd upload behavior
   };
 
+  const handleRemove = async () => {
+    if (!uploadedFile) return;
+    setRemoving(true);
+    try {
+      if (onFileRemove) {
+        await onFileRemove(uploadedFile.url);
+      }
+      setUploadedFile(null);
+    } catch (err: unknown) {
+      const msg = err instanceof Error ? err.message : "שגיאה במחיקה";
+      setError(`שגיאה במחיקה: ${msg}`);
+    } finally {
+      setRemoving(false);
+    }
+  };
+
   const uploadProps = {
     beforeUpload: handleUpload,
     showUploadList: false,
@@ -126,11 +157,28 @@ export const MediaUpload = ({ onUploadComplete, initialUrl, initialFileName }: M
         </div>
       )}
 
-      <Upload {...uploadProps}>
-        <Button icon={<UploadOutlined />} loading={uploading} size="large" style={{ width: "100%" }}>
-          {uploadedFile ? "החלף קובץ" : "בחר קובץ להעלאה"}
-        </Button>
-      </Upload>
+      <div style={{ display: "flex", gap: 8 }}>
+        <Upload {...uploadProps} style={{ flex: 1 }}>
+          <Button icon={<UploadOutlined />} loading={uploading} size="large" style={{ width: "100%" }}>
+            {uploadedFile ? "החלף מדיה" : "בחר מדיה להעלאה"}
+          </Button>
+        </Upload>
+
+        {uploadedFile && onFileRemove && (
+          <Popconfirm
+            title="מחיקת מדיה"
+            description="האם את/ה בטוח/ה שברצונך למחוק את הקובץ? הפרטים האחרים יישמרו."
+            okText="מחק"
+            cancelText="ביטול"
+            okButtonProps={{ danger: true }}
+            onConfirm={handleRemove}
+          >
+            <Button danger icon={<DeleteOutlined />} loading={removing} size="large">
+              מחק מדיה
+            </Button>
+          </Popconfirm>
+        )}
+      </div>
 
       {uploading && (
         <Progress percent={progress} style={{ marginTop: 8 }} />

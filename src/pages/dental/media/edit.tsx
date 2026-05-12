@@ -9,7 +9,13 @@ import { removeMediaFile } from "../../../utils/storage";
 const { TextArea } = Input;
 
 export const DentalMediaEdit = () => {
-  const { formProps, saveButtonProps, form, queryResult } = useForm({ resource: "dental_media" });
+  const { formProps, saveButtonProps, form, queryResult } = useForm({
+    resource: "dental_media",
+    successNotification: () => ({
+      message: "נשמר בהצלחה",
+      type: "success",
+    }),
+  });
   const record = queryResult?.data?.data;
   const { mutate: deleteRecord, isLoading: deleting } = useDelete();
   const { list } = useNavigation();
@@ -36,21 +42,33 @@ export const DentalMediaEdit = () => {
     return formProps.onFinish?.(cleaned);
   };
 
-  const handleDelete = () => {
+  const handleDeleteRecord = () => {
     if (!record?.id) return;
     deleteRecord(
       { resource: "dental_media", id: record.id },
       {
         onSuccess: async () => {
           await removeMediaFile(record.file_url).catch(() => undefined);
-          message.success("הקובץ נמחק");
+          message.success("הרשומה נמחקה");
           list("dental_media");
         },
         onError: () => {
-          message.error("שגיאה במחיקת הקובץ");
+          message.error("שגיאה במחיקת הרשומה");
         },
       }
     );
+  };
+
+  const handleFileOnlyRemove = async (publicUrl?: string) => {
+    await removeMediaFile(publicUrl).catch(() => undefined);
+    form.setFieldsValue({
+      file_url: undefined,
+      file_name: undefined,
+      file_type: undefined,
+      mime_type: undefined,
+      file_size_bytes: undefined,
+    });
+    message.success("המדיה נמחקה");
   };
 
   return (
@@ -61,15 +79,15 @@ export const DentalMediaEdit = () => {
         <>
           {defaultButtons}
           <Popconfirm
-            title="מחיקת הקובץ"
-            description="הפעולה תמחק את הרשומה ואת הקובץ מהאחסון. אין אפשרות לבטל."
+            title="מחיקת רשומה"
+            description="האם את/ה בטוח/ה שברצונך למחוק את כל הרשומה? פעולה זו תמחק את שם הקובץ, ההסבר, הקישור למוצר והקובץ עצמו. אין אפשרות לבטל."
             okText="מחק"
             cancelText="ביטול"
             okButtonProps={{ danger: true }}
-            onConfirm={handleDelete}
+            onConfirm={handleDeleteRecord}
           >
             <Button danger icon={<DeleteOutlined />} loading={deleting}>
-              מחק קובץ
+              מחק רשומה
             </Button>
           </Popconfirm>
         </>
@@ -83,6 +101,7 @@ export const DentalMediaEdit = () => {
             onUploadComplete={({ file_url, file_name, file_type, mime_type, file_size_bytes }) => {
               form.setFieldsValue({ file_url, file_name, file_type, mime_type, file_size_bytes });
             }}
+            onFileRemove={handleFileOnlyRemove}
           />
         </Form.Item>
         <Form.Item
