@@ -1,14 +1,18 @@
 import { Edit, useForm } from "@refinedev/antd";
-import { useList } from "@refinedev/core";
-import { Form, Input, Select } from "antd";
+import { useDelete, useList, useNavigation } from "@refinedev/core";
+import { Button, Form, Input, Popconfirm, Select, message } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import { MediaUpload } from "../../../components/MediaUpload";
 import type { AestheticProduct } from "../../../interfaces";
+import { removeMediaFile } from "../../../utils/storage";
 
 const { TextArea } = Input;
 
 export const AestheticMediaEdit = () => {
   const { formProps, saveButtonProps, form, queryResult } = useForm({ resource: "aesthetic_media" });
   const record = queryResult?.data?.data;
+  const { mutate: deleteRecord, isLoading: deleting } = useDelete();
+  const { list } = useNavigation();
 
   const { data: productsData } = useList<AestheticProduct>({
     resource: "aesthetic_products",
@@ -32,8 +36,45 @@ export const AestheticMediaEdit = () => {
     return formProps.onFinish?.(cleaned);
   };
 
+  const handleDelete = () => {
+    if (!record?.id) return;
+    deleteRecord(
+      { resource: "aesthetic_media", id: record.id },
+      {
+        onSuccess: async () => {
+          await removeMediaFile(record.file_url).catch(() => undefined);
+          message.success("הקובץ נמחק");
+          list("aesthetic_media");
+        },
+        onError: () => {
+          message.error("שגיאה במחיקת הקובץ");
+        },
+      }
+    );
+  };
+
   return (
-    <Edit title="עריכת מדיה — קליניקת אסתטיקה" saveButtonProps={saveButtonProps}>
+    <Edit
+      title="עריכת מדיה — קליניקת אסתטיקה"
+      saveButtonProps={saveButtonProps}
+      headerButtons={({ defaultButtons }) => (
+        <>
+          {defaultButtons}
+          <Popconfirm
+            title="מחיקת הקובץ"
+            description="הפעולה תמחק את הרשומה ואת הקובץ מהאחסון. אין אפשרות לבטל."
+            okText="מחק"
+            cancelText="ביטול"
+            okButtonProps={{ danger: true }}
+            onConfirm={handleDelete}
+          >
+            <Button danger icon={<DeleteOutlined />} loading={deleting}>
+              מחק קובץ
+            </Button>
+          </Popconfirm>
+        </>
+      )}
+    >
       <Form {...formProps} layout="vertical" onFinish={handleFinish}>
         <Form.Item label="קובץ" name="file_url" rules={[{ required: true, message: "חובה להעלות קובץ" }]}>
           <MediaUpload
