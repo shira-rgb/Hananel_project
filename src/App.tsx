@@ -14,6 +14,7 @@ import "@refinedev/antd/dist/reset.css";
 
 import { supabaseClient } from "./supabaseClient";
 import { authProvider } from "./authProvider";
+import { i18nProvider } from "./i18nProvider";
 import { theme } from "./theme";
 import "./index.css";
 
@@ -88,6 +89,7 @@ function App() {
           authProvider={authProvider}
           routerProvider={routerBindings}
           notificationProvider={useNotificationProvider}
+          i18nProvider={i18nProvider}
           resources={[
             // ── קליניקת אסתטיקה ──
             {
