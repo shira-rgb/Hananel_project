@@ -4,6 +4,7 @@ import { CheckOutlined, CloseOutlined, SettingOutlined } from "@ant-design/icons
 import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { AestheticFAQ } from "../../../interfaces";
+import { PageShell } from "../../../components/PageShell";
 
 type ColKey = "category" | "answer" | "is_active";
 
@@ -64,9 +65,23 @@ export const AestheticFAQList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const faqRows = (tableProps.dataSource as AestheticFAQ[] | undefined) ?? [];
+  const totalFaq = faqRows.length;
+  const activeFaq = faqRows.filter((r) => r.is_active).length;
+
   return (
+    <PageShell
+      business="aesthetic"
+      title="שאלות ותשובות"
+      subtitle="ניהול מאגר השאלות הנפוצות שהסוכן משתמש בהן בשיחה."
+      kpis={[
+        { label: "סה״כ שאלות", value: totalFaq },
+        { label: "פעילות", value: activeFaq, highlight: true },
+      ]}
+    >
     <List
-      title="שאלות ותשובות — קליניקת אסתטיקה"
+      title=""
+      breadcrumb={false}
       createButtonProps={{ children: "הוסף שאלה" }}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -92,5 +107,6 @@ export const AestheticFAQList = () => {
         })}
       />
     </List>
+    </PageShell>
   );
 };

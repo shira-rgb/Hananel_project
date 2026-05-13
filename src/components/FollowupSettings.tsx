@@ -433,11 +433,11 @@ export function FollowupSettings({ business }: { business: Business }) {
   ];
 
   return (
-    <div style={{ padding: "8px 8px 32px", maxWidth: 980, margin: "0 auto" }}>
+    <div style={{ padding: "8px 8px 32px", maxWidth: 1640, margin: "0 auto" }}>
       {/* Hero */}
       <div
         style={{
-          background: `linear-gradient(135deg, ${palette.primary} 0%, ${palette.chip} 65%, ${palette.accent} 100%)`,
+          background: `linear-gradient(255deg, ${palette.deep} 0%, ${palette.primary} 35%, ${palette.chip} 75%, ${palette.accent} 100%)`,
           borderRadius: 24,
           padding: "28px 32px",
           color: "#fff",
@@ -468,13 +468,13 @@ export function FollowupSettings({ business }: { business: Business }) {
           }}
         >
           <div>
-            <div style={{ fontSize: 12, opacity: 0.85, letterSpacing: 1, textTransform: "uppercase" }}>
+            <div style={{ fontSize: 12, opacity: 0.95, letterSpacing: 1, textTransform: "uppercase", textShadow: "0 1px 2px rgba(0,0,0,0.25)" }}>
               {palette.icon} {palette.label}
             </div>
-            <h1 style={{ margin: "8px 0 4px", fontSize: 28, fontWeight: 700, letterSpacing: -0.5 }}>
+            <h1 style={{ margin: "8px 0 4px", fontSize: 28, fontWeight: 700, letterSpacing: -0.5, textShadow: "0 2px 6px rgba(0,0,0,0.28)" }}>
               הגדרות פולואפ
             </h1>
-            <div style={{ fontSize: 13, opacity: 0.85, maxWidth: 560 }}>
+            <div style={{ fontSize: 13, opacity: 0.95, maxWidth: 560, textShadow: "0 1px 3px rgba(0,0,0,0.22)" }}>
               לכל טיפול מהקטלוג — הגדרי מתי לשלוח פולואפ. ההודעה עצמה נוצרת אוטומטית
               על־פי הטיפול ושאר נתוני הלקוח/ה במערכת.
             </div>

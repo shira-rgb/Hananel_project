@@ -1,6 +1,7 @@
 import { Edit, useForm, DeleteButton } from "@refinedev/antd";
 import { Form, Input, Select, Switch, Divider } from "antd";
 import { useNavigate } from "react-router-dom";
+import { PageShell } from "../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -9,8 +10,15 @@ export const DoctorEdit = () => {
   const { formProps, saveButtonProps, id } = useForm({ resource: "doctors" });
 
   return (
-    <Edit
+    <PageShell
+      business="neutral"
+      eyebrow="צוות מקצועי"
       title="עריכת רופא / מטפל"
+      subtitle="עדכון פרטי חבר/ת צוות."
+    >
+    <Edit
+      title=""
+      breadcrumb={false}
       saveButtonProps={saveButtonProps}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -80,5 +88,6 @@ export const DoctorEdit = () => {
 
       </Form>
     </Edit>
+    </PageShell>
   );
 };

@@ -1,6 +1,7 @@
 import { Edit, useForm } from "@refinedev/antd";
 import { Form, Input, Select, DatePicker } from "antd";
 import dayjs from "dayjs";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -12,7 +13,12 @@ export const AestheticInquiryEdit = () => {
   const record: any = queryResult?.data?.data;
 
   return (
-    <Edit title="עריכת פנייה — קליניקת אסתטיקה" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="aesthetic"
+      title="עריכת פנייה"
+      subtitle="עדכון פרטי פנייה — סטטוס, מקור והערות."
+    >
+    <Edit title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form
         {...formProps}
         layout="vertical"
@@ -60,5 +66,6 @@ export const AestheticInquiryEdit = () => {
         </Form.Item>
       </Form>
     </Edit>
+    </PageShell>
   );
 };

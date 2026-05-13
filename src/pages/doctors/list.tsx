@@ -4,6 +4,7 @@ import { CheckOutlined, CloseOutlined, SettingOutlined } from "@ant-design/icons
 import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { Doctor } from "../../interfaces";
+import { PageShell } from "../../components/PageShell";
 
 type ColKey = "specialty" | "gender" | "experience" | "education" | "languages" | "working_hours" | "accepting_new_patients" | "business_association";
 
@@ -77,9 +78,23 @@ export const DoctorList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const totalDoctors = (tableProps.dataSource as Doctor[] | undefined)?.length ?? 0;
+  const acceptingNew = (tableProps.dataSource as Doctor[] | undefined)?.filter(d => d.accepting_new_patients).length ?? 0;
+
   return (
-    <List
+    <PageShell
+      business="neutral"
+      eyebrow="צוות מקצועי"
       title="רופאים ומטפלים"
+      subtitle="ניהול צוות הרופאים והמטפלים בשני העסקים — שיוך עסק, תחומי מומחיות וזמינות לקבלת מטופלים חדשים."
+      kpis={[
+        { label: "סה״כ", value: totalDoctors },
+        { label: "מקבלים חדשים", value: acceptingNew, highlight: true },
+      ]}
+    >
+    <List
+      title=""
+      breadcrumb={false}
       createButtonProps={{ children: "הוסף רופא/מטפל" }}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -105,5 +120,6 @@ export const DoctorList = () => {
         })}
       />
     </List>
+    </PageShell>
   );
 };

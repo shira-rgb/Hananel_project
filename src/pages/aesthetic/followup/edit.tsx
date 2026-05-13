@@ -2,6 +2,7 @@ import { Edit, useForm } from "@refinedev/antd";
 import { useList } from "@refinedev/core";
 import { Form, Input, InputNumber, Select, Switch, Space } from "antd";
 import type { AestheticProduct } from "../../../interfaces";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -20,7 +21,12 @@ export const AestheticFollowupEdit = () => {
   });
 
   return (
-    <Edit title="עריכת הודעת פולואפ — אסתטיקה" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="aesthetic"
+      title="עריכת הודעת פולואפ"
+      subtitle="עדכון הודעת מעקב אוטומטית."
+    >
+    <Edit title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item label="מוצר מקושר (בחירה מרובה)" name="treatment_types">
           <Select mode="multiple" options={productOptions} allowClear />
@@ -75,5 +81,6 @@ export const AestheticFollowupEdit = () => {
         </Form.Item>
       </Form>
     </Edit>
+    </PageShell>
   );
 };

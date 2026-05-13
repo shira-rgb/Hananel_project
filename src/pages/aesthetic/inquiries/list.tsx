@@ -10,6 +10,7 @@ import {
   inquiryStatusLabel,
   formatDateOnly,
 } from "../../../utils/formatters";
+import { PageShell } from "../../../components/PageShell";
 
 const { RangePicker } = DatePicker;
 
@@ -55,8 +56,19 @@ export const AestheticInquiryList = () => {
   const sortedSources = Object.entries(sourceCounts).sort((a, b) => b[1] - a[1]);
 
   return (
+    <PageShell
+      business="aesthetic"
+      title="מעקב פניות"
+      subtitle="מעקב אחר פניות לקוחות לפי טווח תאריכים, סטטוס ומקור."
+      kpis={[
+        { label: "סה״כ", value: total },
+        { label: "קבעו פגישה", value: scheduled, highlight: true },
+        { label: "פנו", value: inquired },
+      ]}
+    >
     <List
-      title="מעקב פניות — קליניקת אסתטיקה"
+      title=""
+      breadcrumb={false}
       createButtonProps={{ children: "רישום פנייה חדשה" }}
     >
       <div style={{ marginBottom: 16 }}>
@@ -172,5 +184,6 @@ export const AestheticInquiryList = () => {
         ]}
       />
     </List>
+    </PageShell>
   );
 };

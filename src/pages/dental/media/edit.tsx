@@ -5,6 +5,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { MediaUpload } from "../../../components/MediaUpload";
 import type { DentalProduct } from "../../../interfaces";
 import { removeMediaFile } from "../../../utils/storage";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -66,8 +67,14 @@ export const DentalMediaEdit = () => {
   };
 
   return (
+    <PageShell
+      business="dental"
+      title="עריכת מדיה"
+      subtitle="עדכון פרטי קובץ המדיה, החלפת קובץ או מחיקה מלאה."
+    >
     <Edit
-      title="עריכת מדיה — מרפאת שיניים"
+      title=""
+      breadcrumb={false}
       saveButtonProps={saveButtonProps}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -135,5 +142,6 @@ export const DentalMediaEdit = () => {
         </Form.Item>
       </Form>
     </Edit>
+    </PageShell>
   );
 };

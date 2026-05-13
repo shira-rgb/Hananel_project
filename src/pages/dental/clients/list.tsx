@@ -5,6 +5,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { DentalClient } from "../../../interfaces";
 import { formatDate } from "../../../utils/formatters";
+import { PageShell } from "../../../components/PageShell";
 
 type ColKey = "phone" | "email" | "notes" | "created_at";
 
@@ -65,9 +66,18 @@ export const DentalClientList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const totalClients = (tableProps.dataSource as DentalClient[] | undefined)?.length ?? 0;
+
   return (
+    <PageShell
+      business="dental"
+      title="לקוחות"
+      subtitle="ניהול מאגר הלקוחות של המרפאה."
+      kpis={[{ label: "סה״כ לקוחות", value: totalClients }]}
+    >
     <List
-      title="לקוחות — מרפאת שיניים"
+      title=""
+      breadcrumb={false}
       createButtonProps={{ children: "הוסף לקוח" }}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -93,5 +103,6 @@ export const DentalClientList = () => {
         })}
       />
     </List>
+    </PageShell>
   );
 };

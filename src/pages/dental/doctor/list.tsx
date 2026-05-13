@@ -1,6 +1,7 @@
 import { useTable, List, DeleteButton, EditButton } from "@refinedev/antd";
 import { Table, Space } from "antd";
 import type { DentalDoctorProfile } from "../../../interfaces";
+import { PageShell } from "../../../components/PageShell";
 
 export const DentalDoctorList = () => {
   const { tableProps } = useTable<DentalDoctorProfile>({
@@ -8,8 +9,18 @@ export const DentalDoctorList = () => {
     sorters: { initial: [{ field: "display_order", order: "asc" }] },
   });
 
+  const totalSections = (tableProps.dataSource as DentalDoctorProfile[] | undefined)?.length ?? 0;
+
   return (
-    <List title="פרופיל רופא / ייעוץ פה ולסת" createButtonProps={{ children: "הוסף סעיף" }}>
+    <PageShell
+      business="dental"
+      title="פרופיל רופא"
+      subtitle="ניהול תכני פרופיל הרופא — הסבר, חוות דעת, לוחות זמנים ועלויות."
+      kpis={[
+        { label: "סעיפים", value: totalSections },
+      ]}
+    >
+    <List title="" breadcrumb={false} createButtonProps={{ children: "הוסף סעיף" }}>
       <Table {...tableProps} rowKey="id">
         <Table.Column title="סדר" dataIndex="display_order" width={70} />
         <Table.Column title="כותרת" dataIndex="section_title" />
@@ -33,5 +44,6 @@ export const DentalDoctorList = () => {
         />
       </Table>
     </List>
+    </PageShell>
   );
 };

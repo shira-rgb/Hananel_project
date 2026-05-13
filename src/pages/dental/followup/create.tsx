@@ -2,6 +2,7 @@ import { Create, useForm } from "@refinedev/antd";
 import { useList } from "@refinedev/core";
 import { Form, Input, InputNumber, Select, Switch, Space } from "antd";
 import type { DentalProduct } from "../../../interfaces";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -20,7 +21,12 @@ export const DentalFollowupCreate = () => {
   });
 
   return (
-    <Create title="הוספת הודעת פולואפ — מרפאת שיניים" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="dental"
+      title="הוספת הודעת פולואפ"
+      subtitle="הגדרת הודעת מעקב אוטומטית — נשלחת ללקוחות אחרי או לפני טיפול."
+    >
+    <Create title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form
         {...formProps}
         layout="vertical"
@@ -84,5 +90,6 @@ export const DentalFollowupCreate = () => {
         </Form.Item>
       </Form>
     </Create>
+    </PageShell>
   );
 };

@@ -3,6 +3,7 @@ import { useList } from "@refinedev/core";
 import { Form, Input, Select } from "antd";
 import { MediaUpload } from "../../../components/MediaUpload";
 import type { DentalProduct } from "../../../interfaces";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -22,7 +23,12 @@ export const DentalMediaCreate = () => {
   }));
 
   return (
-    <Create title="הוספת מדיה — מרפאת שיניים" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="dental"
+      title="הוספת מדיה"
+      subtitle="העלאת תמונה או סרטון למרפאה — הסוכן ישלח אותם בשיחה ללקוחות."
+    >
+    <Create title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item
           label="העלאת קובץ"
@@ -73,5 +79,6 @@ export const DentalMediaCreate = () => {
         </Form.Item>
       </Form>
     </Create>
+    </PageShell>
   );
 };

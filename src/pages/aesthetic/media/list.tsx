@@ -5,6 +5,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { AestheticMedia } from "../../../interfaces";
 import { formatDate, usageTypeLabel } from "../../../utils/formatters";
+import { PageShell } from "../../../components/PageShell";
 
 type ColKey = "file_name" | "file_type" | "product" | "usage_type" | "description" | "created_at";
 
@@ -94,9 +95,25 @@ export const AestheticMediaList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const mediaRows = (tableProps.dataSource as AestheticMedia[] | undefined) ?? [];
+  const totalMedia = mediaRows.length;
+  const imageMedia = mediaRows.filter((m) => m.file_type === "image").length;
+  const videoMedia = mediaRows.filter((m) => m.file_type === "video").length;
+
   return (
+    <PageShell
+      business="aesthetic"
+      title="מדיה ותמונות"
+      subtitle="ספריית מדיה — תמונות וסרטונים שהסוכן שולח ללקוחות בשיחות."
+      kpis={[
+        { label: "סה״כ קבצים", value: totalMedia },
+        { label: "תמונות", value: imageMedia },
+        { label: "סרטונים", value: videoMedia },
+      ]}
+    >
     <List
-      title="מדיה — קליניקת אסתטיקה"
+      title=""
+      breadcrumb={false}
       createButtonProps={{ children: "העלה קובץ" }}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -122,5 +139,6 @@ export const AestheticMediaList = () => {
         })}
       />
     </List>
+    </PageShell>
   );
 };

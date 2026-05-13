@@ -1,6 +1,7 @@
 import { Create, useForm } from "@refinedev/antd";
 import { Form, Input, Select, DatePicker } from "antd";
 import dayjs from "dayjs";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -10,7 +11,12 @@ export const DentalInquiryCreate = () => {
   });
 
   return (
-    <Create title="רישום פנייה חדשה — מרפאת שיניים" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="dental"
+      title="רישום פנייה חדשה"
+      subtitle="הוספת פנייה ידנית למעקב — מקור הפנייה, סטטוס וזמן הראשון."
+    >
+    <Create title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form
         {...formProps}
         layout="vertical"
@@ -54,5 +60,6 @@ export const DentalInquiryCreate = () => {
         </Form.Item>
       </Form>
     </Create>
+    </PageShell>
   );
 };
