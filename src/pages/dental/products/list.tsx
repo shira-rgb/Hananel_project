@@ -1,20 +1,18 @@
 import { useTable, List, DeleteButton, EditButton } from "@refinedev/antd";
-import { Table, Tag, Space, Button, Tooltip, Popover, Checkbox } from "antd";
-import { CheckOutlined, CloseOutlined, UnorderedListOutlined, SettingOutlined } from "@ant-design/icons";
+import { Table, Space, Button, Tooltip, Popover, Checkbox } from "antd";
+import { UnorderedListOutlined, SettingOutlined } from "@ant-design/icons";
 import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { DentalProduct } from "../../../interfaces";
 import { formatDate, formatPrice } from "../../../utils/formatters";
 import { PageShell } from "../../../components/PageShell";
 
-type ColKey = "treatment_type" | "description" | "price" | "show_in_pricelist" | "is_active" | "updated_at";
+type ColKey = "treatment_type" | "description" | "price" | "updated_at";
 
 const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
   { key: "treatment_type",   label: "סוג טיפול", defaultVisible: true },
   { key: "description",      label: "הסבר",      defaultVisible: true },
   { key: "price",            label: "מחיר",      defaultVisible: true },
-  { key: "show_in_pricelist",label: "במחירון",   defaultVisible: true },
-  { key: "is_active",        label: "פעיל",      defaultVisible: true },
   { key: "updated_at",       label: "עודכן",     defaultVisible: true },
 ];
 
@@ -64,14 +62,6 @@ export const DentalProductList = () => {
       key: "price", title: "מחיר", dataIndex: "price", width: 120,
       render: (p: number) => formatPrice(p),
     },
-    vis("show_in_pricelist") && {
-      key: "show_in_pricelist", title: "במחירון", dataIndex: "show_in_pricelist", width: 90,
-      render: (v: boolean) => v ? <Tag icon={<CheckOutlined />} color="success">כן</Tag> : <Tag icon={<CloseOutlined />} color="default">לא</Tag>,
-    },
-    vis("is_active") && {
-      key: "is_active", title: "פעיל", dataIndex: "is_active", width: 80,
-      render: (v: boolean) => v ? <Tag color="green">פעיל</Tag> : <Tag color="red">לא פעיל</Tag>,
-    },
     vis("updated_at") && {
       key: "updated_at", title: "עודכן", dataIndex: "updated_at", width: 140,
       render: (d: string) => formatDate(d),
@@ -87,19 +77,11 @@ export const DentalProductList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const totalProducts = (tableProps.dataSource as DentalProduct[] | undefined)?.length ?? 0;
-  const activeProducts = (tableProps.dataSource as DentalProduct[] | undefined)?.filter(p => p.is_active).length ?? 0;
-
   return (
     <PageShell
       business="dental"
       title="מוצרים ומחירון"
       subtitle="ניהול קטלוג הטיפולים — מחירים, פרטים טכניים, ותצוגה במחירון."
-      kpis={[
-        { label: "סה״כ טיפולים", value: totalProducts },
-        { label: "פעילים", value: activeProducts, highlight: true },
-        { label: "במחירון", value: pricelistItems.length },
-      ]}
     >
     <List
       title=""

@@ -1,17 +1,16 @@
 import { useTable, List, DeleteButton, EditButton } from "@refinedev/antd";
-import { Table, Tag, Space, Popover, Checkbox, Button } from "antd";
-import { CheckOutlined, CloseOutlined, SettingOutlined } from "@ant-design/icons";
+import { Table, Space, Popover, Checkbox, Button } from "antd";
+import { SettingOutlined } from "@ant-design/icons";
 import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { AestheticFAQ } from "../../../interfaces";
 import { PageShell } from "../../../components/PageShell";
 
-type ColKey = "category" | "answer" | "is_active";
+type ColKey = "category" | "answer";
 
 const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
   { key: "category",  label: "קטגוריה", defaultVisible: true },
   { key: "answer",    label: "תשובה",   defaultVisible: true },
-  { key: "is_active", label: "פעיל",    defaultVisible: true },
 ];
 
 export const AestheticFAQList = () => {
@@ -48,12 +47,6 @@ export const AestheticFAQList = () => {
         <div style={{ maxWidth: 400, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={text}>{text}</div>
       ),
     },
-    vis("is_active") && {
-      key: "is_active", title: "פעיל", dataIndex: "is_active", width: 80,
-      render: (v: boolean) =>
-        v ? <Tag icon={<CheckOutlined />} color="success">כן</Tag>
-          : <Tag icon={<CloseOutlined />} color="default">לא</Tag>,
-    },
     {
       key: "actions", title: "פעולות", width: 100,
       render: (_: unknown, record: AestheticFAQ) => (
@@ -65,19 +58,11 @@ export const AestheticFAQList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const faqRows = (tableProps.dataSource as AestheticFAQ[] | undefined) ?? [];
-  const totalFaq = faqRows.length;
-  const activeFaq = faqRows.filter((r) => r.is_active).length;
-
   return (
     <PageShell
       business="aesthetic"
       title="שאלות ותשובות"
       subtitle="ניהול מאגר השאלות הנפוצות שהסוכן משתמש בהן בשיחה."
-      kpis={[
-        { label: "סה״כ שאלות", value: totalFaq },
-        { label: "פעילות", value: activeFaq, highlight: true },
-      ]}
     >
     <List
       title=""

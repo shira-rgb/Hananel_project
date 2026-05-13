@@ -1,6 +1,6 @@
 import { useTable, List, DeleteButton, EditButton } from "@refinedev/antd";
-import { Table, Tag, Space, Button, Tooltip, Popover, Checkbox } from "antd";
-import { CheckOutlined, CloseOutlined, UnorderedListOutlined, SettingOutlined } from "@ant-design/icons";
+import { Table, Space, Button, Tooltip, Popover, Checkbox } from "antd";
+import { UnorderedListOutlined, SettingOutlined } from "@ant-design/icons";
 import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { AestheticProduct } from "../../../interfaces";
@@ -10,7 +10,7 @@ import { PageShell } from "../../../components/PageShell";
 type ColKey =
   | "treatment_type" | "body_area" | "product_description" | "indications"
   | "price" | "treatment_duration" | "results_timeline" | "effect_duration"
-  | "recovery_time" | "show_in_pricelist" | "is_active" | "updated_at" | "description";
+  | "recovery_time" | "updated_at" | "description";
 
 const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
   { key: "treatment_type",       label: "סוג טיפול",           defaultVisible: true  },
@@ -22,8 +22,6 @@ const COLUMN_DEFS: { key: ColKey; label: string; defaultVisible: boolean }[] = [
   { key: "results_timeline",     label: "זמן לתוצאות",          defaultVisible: false },
   { key: "effect_duration",      label: "משך השפעה",            defaultVisible: false },
   { key: "recovery_time",        label: "זמן החלמה",            defaultVisible: false },
-  { key: "show_in_pricelist",    label: "במחירון",              defaultVisible: true  },
-  { key: "is_active",            label: "פעיל",                 defaultVisible: true  },
   { key: "updated_at",           label: "עודכן",                defaultVisible: true  },
   { key: "description",          label: "הסבר (כללי)",          defaultVisible: false },
 ];
@@ -102,16 +100,6 @@ export const AestheticProductList = () => {
     vis("results_timeline") && { key: "results_timeline", title: "זמן לתוצאות", dataIndex: "results_timeline", width: 140 },
     vis("effect_duration") && { key: "effect_duration", title: "משך השפעה", dataIndex: "effect_duration", width: 120 },
     vis("recovery_time") && { key: "recovery_time", title: "זמן החלמה", dataIndex: "recovery_time", width: 120 },
-    vis("show_in_pricelist") && {
-      key: "show_in_pricelist", title: "במחירון", dataIndex: "show_in_pricelist", width: 90,
-      render: (v: boolean) =>
-        v ? <Tag icon={<CheckOutlined />} color="success">כן</Tag>
-          : <Tag icon={<CloseOutlined />} color="default">לא</Tag>,
-    },
-    vis("is_active") && {
-      key: "is_active", title: "פעיל", dataIndex: "is_active", width: 80,
-      render: (v: boolean) => v ? <Tag color="green">פעיל</Tag> : <Tag color="red">לא פעיל</Tag>,
-    },
     vis("updated_at") && {
       key: "updated_at", title: "עודכן", dataIndex: "updated_at", width: 140,
       render: (d: string) => formatDate(d),
@@ -131,19 +119,11 @@ export const AestheticProductList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const totalProducts = (tableProps.dataSource as AestheticProduct[] | undefined)?.length ?? 0;
-  const activeProducts = (tableProps.dataSource as AestheticProduct[] | undefined)?.filter(p => p.is_active).length ?? 0;
-
   return (
     <PageShell
       business="aesthetic"
       title="מוצרים ומחירון"
       subtitle="ניהול קטלוג הטיפולים — מחירים, פרטים טכניים, ותצוגה במחירון."
-      kpis={[
-        { label: "סה״כ מוצרים", value: totalProducts },
-        { label: "פעילים", value: activeProducts, highlight: true },
-        { label: "במחירון", value: pricelistItems.length },
-      ]}
     >
       <List
         title=""
