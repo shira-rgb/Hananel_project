@@ -1,5 +1,6 @@
 import { Create, useForm } from "@refinedev/antd";
 import { Form, Input, InputNumber } from "antd";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -7,7 +8,12 @@ export const DentalBusinessCreate = () => {
   const { formProps, saveButtonProps } = useForm({ resource: "dental_business_info" });
 
   return (
-    <Create title="הוספת סעיף — מידע על העסק" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="dental"
+      title="הוספת סעיף מידע"
+      subtitle="הוספת סעיף חדש למידע על המרפאה שיהיה זמין לסוכן."
+    >
+    <Create title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ display_order: 0 }}>
         <Form.Item label="כותרת הסעיף" name="section_title" rules={[{ required: true, message: "חובה להכניס כותרת" }]}>
           <Input placeholder='לדוגמה: שעות פתיחה, כתובת, אודות המרפאה...' />
@@ -20,5 +26,6 @@ export const DentalBusinessCreate = () => {
         </Form.Item>
       </Form>
     </Create>
+    </PageShell>
   );
 };

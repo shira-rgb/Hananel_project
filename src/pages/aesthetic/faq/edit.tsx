@@ -3,6 +3,7 @@ import { useList } from "@refinedev/core";
 import { Form, Select, Input, Switch } from "antd";
 import { useNavigate } from "react-router-dom";
 import type { AestheticFAQ } from "../../../interfaces";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -22,8 +23,14 @@ export const AestheticFAQEdit = () => {
   ].map((c) => ({ label: c, value: c }));
 
   return (
+    <PageShell
+      business="aesthetic"
+      title="עריכת שאלה"
+      subtitle="עדכון שאלה ותשובה במאגר ה־FAQ של הסוכן."
+    >
     <Edit
-      title="עריכת שאלה — אסתטיקה"
+      title=""
+      breadcrumb={false}
       saveButtonProps={saveButtonProps}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -61,5 +68,6 @@ export const AestheticFAQEdit = () => {
         </Form.Item>
       </Form>
     </Edit>
+    </PageShell>
   );
 };

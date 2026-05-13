@@ -5,6 +5,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { AestheticClient } from "../../../interfaces";
 import { formatDate } from "../../../utils/formatters";
+import { PageShell } from "../../../components/PageShell";
 
 type ColKey = "phone" | "email" | "notes" | "created_at";
 
@@ -65,9 +66,18 @@ export const AestheticClientList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const totalClients = (tableProps.dataSource as AestheticClient[] | undefined)?.length ?? 0;
+
   return (
+    <PageShell
+      business="aesthetic"
+      title="לקוחות"
+      subtitle="ניהול מאגר הלקוחות של הקליניקה."
+      kpis={[{ label: "סה״כ לקוחות", value: totalClients }]}
+    >
     <List
-      title="לקוחות — קליניקת אסתטיקה"
+      title=""
+      breadcrumb={false}
       createButtonProps={{ children: "הוסף לקוח" }}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -93,5 +103,6 @@ export const AestheticClientList = () => {
         })}
       />
     </List>
+    </PageShell>
   );
 };

@@ -1,5 +1,6 @@
 import { Edit, useForm } from "@refinedev/antd";
 import { Form, Input, InputNumber } from "antd";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -7,7 +8,12 @@ export const DentalDoctorEdit = () => {
   const { formProps, saveButtonProps } = useForm({ resource: "dental_doctor_profile" });
 
   return (
-    <Edit title="עריכת סעיף — פרופיל רופא" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="dental"
+      title="עריכת סעיף בפרופיל הרופא"
+      subtitle="עדכון סעיף בפרופיל הרופא."
+    >
+    <Edit title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical">
         <Form.Item label="כותרת הסעיף" name="section_title" rules={[{ required: true }]}>
           <Input />
@@ -20,5 +26,6 @@ export const DentalDoctorEdit = () => {
         </Form.Item>
       </Form>
     </Edit>
+    </PageShell>
   );
 };

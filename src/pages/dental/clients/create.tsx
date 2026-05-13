@@ -1,6 +1,7 @@
 import { Create, useForm } from "@refinedev/antd";
 import { Form, Input, message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -24,8 +25,14 @@ export const DentalClientCreate = () => {
   });
 
   return (
+    <PageShell
+      business="dental"
+      title="הוספת לקוח/ה"
+      subtitle="הוספת לקוח/ה חדש/ה למאגר. לאחר השמירה תועברי לעמוד העריכה להשלמת פרטים."
+    >
     <Create
-      title="הוספת לקוח/ה — מרפאת שיניים"
+      title=""
+      breadcrumb={false}
       saveButtonProps={{ ...saveButtonProps, children: "שמור והמשך לעריכה" }}
     >
       <Form {...formProps} layout="vertical">
@@ -46,5 +53,6 @@ export const DentalClientCreate = () => {
         </Form.Item>
       </Form>
     </Create>
+    </PageShell>
   );
 };

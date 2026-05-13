@@ -5,6 +5,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { AestheticProduct } from "../../../interfaces";
 import { formatDate, formatPrice } from "../../../utils/formatters";
+import { PageShell } from "../../../components/PageShell";
 
 type ColKey =
   | "treatment_type" | "body_area" | "product_description" | "indications"
@@ -130,38 +131,53 @@ export const AestheticProductList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const totalProducts = (tableProps.dataSource as AestheticProduct[] | undefined)?.length ?? 0;
+  const activeProducts = (tableProps.dataSource as AestheticProduct[] | undefined)?.filter(p => p.is_active).length ?? 0;
+
   return (
-    <List
-      title="מוצרים ומחירון — קליניקת אסתטיקה"
-      createButtonProps={{ children: "הוסף מוצר" }}
-      headerButtons={({ defaultButtons }) => (
-        <>
-          {defaultButtons}
-          <Tooltip title="העתק מחירון (מוצרים שמסומנים)">
-            <Button icon={<UnorderedListOutlined />} onClick={copyPricelist}>
-              העתק מחירון
-            </Button>
-          </Tooltip>
-          <Popover content={colVisibilityContent} title="הצג עמודות" trigger="click" placement="bottomLeft">
-            <Button icon={<SettingOutlined />}>עמודות</Button>
-          </Popover>
-        </>
-      )}
+    <PageShell
+      business="aesthetic"
+      title="מוצרים ומחירון"
+      subtitle="ניהול קטלוג הטיפולים — מחירים, פרטים טכניים, ותצוגה במחירון."
+      kpis={[
+        { label: "סה״כ מוצרים", value: totalProducts },
+        { label: "פעילים", value: activeProducts, highlight: true },
+        { label: "במחירון", value: pricelistItems.length },
+      ]}
     >
-      <Table
-        {...tableProps}
-        rowKey="id"
-        columns={columns as any}
-        scroll={{ x: "max-content" }}
-        onRow={(record: AestheticProduct) => ({
-          onClick: (e) => {
-            const target = e.target as HTMLElement;
-            if (target.closest("button") || target.closest(".ant-btn")) return;
-            navigate(`/aesthetic/products/edit/${record.id}`);
-          },
-          style: { cursor: "pointer" },
-        })}
-      />
-    </List>
+      <List
+        title=""
+        breadcrumb={false}
+        createButtonProps={{ children: "הוסף מוצר" }}
+        headerButtons={({ defaultButtons }) => (
+          <>
+            {defaultButtons}
+            <Tooltip title="העתק מחירון (מוצרים שמסומנים)">
+              <Button icon={<UnorderedListOutlined />} onClick={copyPricelist}>
+                העתק מחירון
+              </Button>
+            </Tooltip>
+            <Popover content={colVisibilityContent} title="הצג עמודות" trigger="click" placement="bottomLeft">
+              <Button icon={<SettingOutlined />}>עמודות</Button>
+            </Popover>
+          </>
+        )}
+      >
+        <Table
+          {...tableProps}
+          rowKey="id"
+          columns={columns as any}
+          scroll={{ x: "max-content" }}
+          onRow={(record: AestheticProduct) => ({
+            onClick: (e) => {
+              const target = e.target as HTMLElement;
+              if (target.closest("button") || target.closest(".ant-btn")) return;
+              navigate(`/aesthetic/products/edit/${record.id}`);
+            },
+            style: { cursor: "pointer" },
+          })}
+        />
+      </List>
+    </PageShell>
   );
 };

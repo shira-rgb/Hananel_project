@@ -1,5 +1,6 @@
 import { Create, useForm } from "@refinedev/antd";
 import { Form, Input, InputNumber, Switch, Space, Divider, Row, Col } from "antd";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -7,7 +8,12 @@ export const AestheticProductCreate = () => {
   const { formProps, saveButtonProps } = useForm({ resource: "aesthetic_products" });
 
   return (
-    <Create title="הוספת מוצר — אסתטיקה" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="aesthetic"
+      title="הוספת מוצר"
+      subtitle="הוספת טיפול חדש לקטלוג — מחיר, פרטים טכניים והגדרות תצוגה."
+    >
+    <Create title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ show_in_pricelist: true, is_active: true }}>
 
         <Divider orientation="left">זהות המוצר</Divider>
@@ -105,5 +111,6 @@ export const AestheticProductCreate = () => {
 
       </Form>
     </Create>
+    </PageShell>
   );
 };

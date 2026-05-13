@@ -32,3 +32,23 @@ export const usageTypeLabel = (type?: string) => {
   };
   return type ? (map[type] ?? type) : "-";
 };
+
+export const inquiryStatusLabel = (status?: string) => {
+  const map: Record<string, string> = {
+    inquired: "פנו",
+    scheduled: "קבעו פגישה",
+    callback_requested: "ממתינים לשיחה חוזרת",
+  };
+  return status ? (map[status] ?? status) : "-";
+};
+
+export const inquiryStatusColor = (status?: string) => {
+  const map: Record<string, string> = {
+    inquired: "blue",
+    scheduled: "green",
+    callback_requested: "orange",
+  };
+  return status ? (map[status] ?? "default") : "default";
+};
+
+export const formatDateOnly = (date: string) => dayjs(date).format("DD/MM/YYYY");

@@ -1,5 +1,6 @@
 import { Create, useForm } from "@refinedev/antd";
 import { Form, Input, Select, Switch, Divider } from "antd";
+import { PageShell } from "../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -7,7 +8,13 @@ export const DoctorCreate = () => {
   const { formProps, saveButtonProps } = useForm({ resource: "doctors" });
 
   return (
-    <Create title="הוספת רופא / מטפל" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="neutral"
+      eyebrow="צוות מקצועי"
+      title="הוספת רופא / מטפל"
+      subtitle="הוספת חבר/ת צוות חדש/ה — פרטי מומחיות, שיוך עסק וזמינות."
+    >
+    <Create title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ accepting_new_patients: true }}>
 
         <Divider orientation="left">פרטי הרופא / המטפל</Divider>
@@ -65,5 +72,6 @@ export const DoctorCreate = () => {
 
       </Form>
     </Create>
+    </PageShell>
   );
 };

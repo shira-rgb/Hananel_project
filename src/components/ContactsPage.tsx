@@ -405,11 +405,11 @@ export function ContactsPage({ business }: Props) {
   const isLoading = tableQueryResult.isLoading;
 
   return (
-    <div style={{ padding: "8px 8px 32px" }}>
+    <div style={{ padding: "8px 8px 32px", maxWidth: 1640, margin: "0 auto" }}>
       {/* Hero / KPI strip */}
       <div
         style={{
-          background: `linear-gradient(135deg, ${palette.primary} 0%, ${palette.chip} 65%, ${palette.accent} 100%)`,
+          background: `linear-gradient(255deg, ${palette.deep} 0%, ${palette.primary} 35%, ${palette.chip} 75%, ${palette.accent} 100%)`,
           borderRadius: 24,
           padding: "32px 36px",
           color: "#fff",
@@ -444,13 +444,13 @@ export function ContactsPage({ business }: Props) {
 
         <div style={{ position: "relative", display: "flex", justifyContent: "space-between", alignItems: "flex-end", flexWrap: "wrap", gap: 24 }}>
           <div>
-            <div style={{ fontSize: 13, opacity: 0.85, letterSpacing: 1, textTransform: "uppercase" }}>
+            <div style={{ fontSize: 13, opacity: 0.95, letterSpacing: 1, textTransform: "uppercase", textShadow: "0 1px 2px rgba(0,0,0,0.25)" }}>
               {palette.icon} {palette.label}
             </div>
-            <h1 style={{ margin: "8px 0 4px", fontSize: 30, fontWeight: 700, letterSpacing: -0.5 }}>
+            <h1 style={{ margin: "8px 0 4px", fontSize: 30, fontWeight: 700, letterSpacing: -0.5, textShadow: "0 2px 6px rgba(0,0,0,0.28)" }}>
               ניהול לידים ולקוחות
             </h1>
-            <div style={{ fontSize: 14, opacity: 0.85 }}>
+            <div style={{ fontSize: 14, opacity: 0.95, textShadow: "0 1px 3px rgba(0,0,0,0.22)" }}>
               סנכרון חי מ־Supabase. כל ליד חדש ולקוחה חוזרת מופיעים פה ברגע שהם נכנסים למערכת.
             </div>
           </div>

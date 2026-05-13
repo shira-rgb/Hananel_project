@@ -2,6 +2,7 @@ import { Create, useForm } from "@refinedev/antd";
 import { useList } from "@refinedev/core";
 import { Form, Select, Input, Switch } from "antd";
 import type { AestheticFAQ } from "../../../interfaces";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -20,7 +21,12 @@ export const AestheticFAQCreate = () => {
   ].map((c) => ({ label: c, value: c }));
 
   return (
-    <Create title="הוספת שאלה — אסתטיקה" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="aesthetic"
+      title="הוספת שאלה"
+      subtitle="הוספת שאלה ותשובה למאגר ה־FAQ של הסוכן."
+    >
+    <Create title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ is_active: true }}>
         <Form.Item
           label="קטגוריה"
@@ -47,5 +53,6 @@ export const AestheticFAQCreate = () => {
         </Form.Item>
       </Form>
     </Create>
+    </PageShell>
   );
 };

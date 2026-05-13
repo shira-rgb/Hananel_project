@@ -5,6 +5,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { MediaUpload } from "../../../components/MediaUpload";
 import type { AestheticProduct } from "../../../interfaces";
 import { removeMediaFile } from "../../../utils/storage";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -66,8 +67,14 @@ export const AestheticMediaEdit = () => {
   };
 
   return (
+    <PageShell
+      business="aesthetic"
+      title="עריכת מדיה"
+      subtitle="עדכון פרטי קובץ המדיה, החלפת קובץ או מחיקה מלאה."
+    >
     <Edit
-      title="עריכת מדיה — קליניקת אסתטיקה"
+      title=""
+      breadcrumb={false}
       saveButtonProps={saveButtonProps}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -135,5 +142,6 @@ export const AestheticMediaEdit = () => {
         </Form.Item>
       </Form>
     </Edit>
+    </PageShell>
   );
 };

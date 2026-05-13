@@ -5,6 +5,7 @@ import { useState, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import type { DentalProduct } from "../../../interfaces";
 import { formatDate, formatPrice } from "../../../utils/formatters";
+import { PageShell } from "../../../components/PageShell";
 
 type ColKey = "treatment_type" | "description" | "price" | "show_in_pricelist" | "is_active" | "updated_at";
 
@@ -86,9 +87,23 @@ export const DentalProductList = () => {
     },
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
+  const totalProducts = (tableProps.dataSource as DentalProduct[] | undefined)?.length ?? 0;
+  const activeProducts = (tableProps.dataSource as DentalProduct[] | undefined)?.filter(p => p.is_active).length ?? 0;
+
   return (
+    <PageShell
+      business="dental"
+      title="מוצרים ומחירון"
+      subtitle="ניהול קטלוג הטיפולים — מחירים, פרטים טכניים, ותצוגה במחירון."
+      kpis={[
+        { label: "סה״כ טיפולים", value: totalProducts },
+        { label: "פעילים", value: activeProducts, highlight: true },
+        { label: "במחירון", value: pricelistItems.length },
+      ]}
+    >
     <List
-      title="מוצרים ומחירון — מרפאת שיניים"
+      title=""
+      breadcrumb={false}
       createButtonProps={{ children: "הוסף מוצר" }}
       headerButtons={({ defaultButtons }) => (
         <>
@@ -117,5 +132,6 @@ export const DentalProductList = () => {
         })}
       />
     </List>
+    </PageShell>
   );
 };

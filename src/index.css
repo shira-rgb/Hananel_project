@@ -31,6 +31,80 @@ body {
   transition: box-shadow 0.2s ease;
 }
 
+/* Unified page-shell card styling — applies to refine List/Edit/Create cards inside PageShell */
+.page-shell .refine-page-header {
+  background: transparent;
+  padding: 0 4px 14px;
+  border-bottom: none;
+}
+.page-shell .ant-page-header {
+  background: transparent;
+  padding: 0 4px 14px;
+}
+.page-shell .ant-page-header-heading-title {
+  display: none;
+}
+.page-shell .ant-card,
+.page-shell .ant-card-bordered {
+  border-radius: 20px !important;
+  border: 1px solid var(--shell-border, #e2dcec) !important;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02), 0 8px 28px -16px rgba(60, 40, 90, 0.1) !important;
+  background: #fff;
+}
+.page-shell .ant-card:hover {
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.02), 0 12px 32px -14px rgba(60, 40, 90, 0.18) !important;
+}
+.page-shell .ant-card-head {
+  border-bottom: 1px solid var(--shell-border, #e2dcec);
+  padding-inline: 20px;
+}
+.page-shell .ant-card-body {
+  padding: 20px;
+}
+.page-shell .ant-table {
+  border-radius: 16px;
+  overflow: hidden;
+}
+.page-shell .ant-table-thead > tr > th {
+  background: var(--shell-soft, #f6f3fb);
+  color: var(--shell-deep, #2a2236);
+  font-weight: 600;
+  border-bottom: 1px solid var(--shell-border, #e2dcec);
+}
+.page-shell .ant-btn-primary {
+  background: var(--shell-primary, #5b4b6e);
+  border-color: var(--shell-primary, #5b4b6e);
+}
+.page-shell .ant-btn-primary:not(:disabled):hover {
+  background: var(--shell-chip, #7a6788) !important;
+  border-color: var(--shell-chip, #7a6788) !important;
+}
+.page-shell .ant-divider-horizontal.ant-divider-with-text {
+  color: var(--shell-deep, #2a2236);
+  border-color: var(--shell-border, #e2dcec);
+  font-weight: 600;
+}
+.page-shell .ant-form-item-label > label {
+  color: var(--shell-deep, #2a2236);
+  font-weight: 500;
+}
+.page-shell .ant-input,
+.page-shell .ant-input-number,
+.page-shell .ant-input-affix-wrapper,
+.page-shell .ant-select-selector,
+.page-shell .ant-picker {
+  border-radius: 10px !important;
+  border-color: var(--shell-border, #e2dcec) !important;
+}
+.page-shell .ant-input:focus,
+.page-shell .ant-input-affix-wrapper-focused,
+.page-shell .ant-input-number-focused,
+.page-shell .ant-select-focused .ant-select-selector,
+.page-shell .ant-picker-focused {
+  border-color: var(--shell-primary, #5b4b6e) !important;
+  box-shadow: 0 0 0 3px var(--shell-primary, #5b4b6e)1f !important;
+}
+
 .ant-table {
   direction: rtl;
 }

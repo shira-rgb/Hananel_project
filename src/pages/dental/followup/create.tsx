@@ -2,6 +2,7 @@ import { Create, useForm } from "@refinedev/antd";
 import { useList } from "@refinedev/core";
 import { Form, Input, InputNumber, Select, Switch, Space } from "antd";
 import type { DentalProduct } from "../../../interfaces";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -20,8 +21,17 @@ export const DentalFollowupCreate = () => {
   });
 
   return (
-    <Create title="הוספת הודעת פולואפ — מרפאת שיניים" saveButtonProps={saveButtonProps}>
-      <Form {...formProps} layout="vertical" initialValues={{ is_active: true, delay_value: 1, delay_unit: "days" }}>
+    <PageShell
+      business="dental"
+      title="הוספת הודעת פולואפ"
+      subtitle="הגדרת הודעת מעקב אוטומטית — נשלחת ללקוחות אחרי או לפני טיפול."
+    >
+    <Create title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
+      <Form
+        {...formProps}
+        layout="vertical"
+        initialValues={{ is_active: true, delay_value: 1, delay_unit: "days", timing_type: "after" }}
+      >
         <Form.Item label="טיפול מקושר (בחירה מרובה)" name="treatment_types">
           <Select
             mode="multiple"
@@ -30,22 +40,56 @@ export const DentalFollowupCreate = () => {
             allowClear
           />
         </Form.Item>
+
         <Form.Item label="תוכן ההודעה" name="message_text" rules={[{ required: true, message: "חובה להכניס תוכן" }]}>
           <TextArea rows={5} placeholder="שלום {שם_לקוח}, רצינו לוודא שהכל בסדר אחרי הטיפול..." />
         </Form.Item>
-        <Space size={16} align="start">
-          <Form.Item label="שלח אחרי" name="delay_value" rules={[{ required: true }]}>
-            <InputNumber min={1} style={{ width: 100 }} />
-          </Form.Item>
-          <Form.Item name="delay_unit" label=" " rules={[{ required: true }]}>
-            <Select style={{ width: 120 }} options={[{ label: "שעות", value: "hours" }, { label: "ימים", value: "days" }, { label: "שבועות", value: "weeks" }]} />
-          </Form.Item>
-          <span style={{ lineHeight: "32px", paddingTop: 30 }}>אחרי הטיפול</span>
-        </Space>
+
+        <Form.Item
+          label="סוג תזמון"
+          name="timing_type"
+          rules={[{ required: true }]}
+          tooltip="'אחרי' = שולח כמה זמן אחרי פנייה/טיפול | 'לפני' = תזכורת לפני פגישה שנקבעה"
+        >
+          <Select
+            style={{ maxWidth: 260 }}
+            options={[
+              { label: "הודעת פולואפ לאחר טיפול", value: "after" },
+              { label: "הודעת תזכורת לפני טיפול", value: "before" },
+            ]}
+          />
+        </Form.Item>
+
+        <Form.Item shouldUpdate={(p, c) => p.timing_type !== c.timing_type} noStyle>
+          {({ getFieldValue }) => {
+            const timing = getFieldValue("timing_type") || "after";
+            return (
+              <Form.Item label={timing === "before" ? "שלח תזכורת לפני הטיפול" : "שלח פולואפ אחרי הטיפול"} required>
+                <Space.Compact>
+                  <Form.Item name="delay_value" rules={[{ required: true }]} noStyle>
+                    <InputNumber min={1} style={{ width: 100 }} />
+                  </Form.Item>
+                  <Form.Item name="delay_unit" rules={[{ required: true }]} noStyle>
+                    <Select
+                      style={{ width: 120 }}
+                      options={[
+                        { label: "שעות", value: "hours" },
+                        { label: "ימים", value: "days" },
+                        { label: "שבועות", value: "weeks" },
+                      ]}
+                    />
+                  </Form.Item>
+                </Space.Compact>
+              </Form.Item>
+            );
+          }}
+        </Form.Item>
+
         <Form.Item label="הודעה פעילה" name="is_active" valuePropName="checked">
           <Switch checkedChildren="פעיל" unCheckedChildren="כבוי" />
         </Form.Item>
       </Form>
     </Create>
+    </PageShell>
   );
 };

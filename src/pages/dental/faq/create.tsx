@@ -2,6 +2,7 @@ import { Create, useForm } from "@refinedev/antd";
 import { useList } from "@refinedev/core";
 import { Form, Select, Input, Switch } from "antd";
 import type { DentalFAQ } from "../../../interfaces";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -20,7 +21,12 @@ export const DentalFAQCreate = () => {
   ].map((c) => ({ label: c, value: c }));
 
   return (
-    <Create title="הוספת שאלה — מרפאת שיניים" saveButtonProps={saveButtonProps}>
+    <PageShell
+      business="dental"
+      title="הוספת שאלה"
+      subtitle="הוספת שאלה ותשובה למאגר ה־FAQ של הסוכן."
+    >
+    <Create title="" breadcrumb={false} saveButtonProps={saveButtonProps}>
       <Form {...formProps} layout="vertical" initialValues={{ is_active: true }}>
         <Form.Item
           label="קטגוריה"
@@ -47,5 +53,6 @@ export const DentalFAQCreate = () => {
         </Form.Item>
       </Form>
     </Create>
+    </PageShell>
   );
 };

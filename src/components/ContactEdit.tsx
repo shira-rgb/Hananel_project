@@ -762,11 +762,11 @@ export function ContactEdit({
   const kindIcon = kind === "leads" ? <FireOutlined /> : <CrownOutlined />;
 
   return (
-    <div style={{ padding: "8px 8px 32px" }}>
+    <div style={{ padding: "8px 8px 32px", maxWidth: 1640, margin: "0 auto" }}>
       {/* Header card */}
       <div
         style={{
-          background: `linear-gradient(135deg, ${palette.primary} 0%, ${palette.chip} 65%, ${palette.accent} 100%)`,
+          background: `linear-gradient(255deg, ${palette.deep} 0%, ${palette.primary} 35%, ${palette.chip} 75%, ${palette.accent} 100%)`,
           borderRadius: 24,
           padding: "28px 32px",
           color: "#fff",
@@ -800,13 +800,13 @@ export function ContactEdit({
             {initials(record) || <UserOutlined />}
           </Avatar>
           <div style={{ flex: 1, minWidth: 200 }}>
-            <div style={{ fontSize: 12, opacity: 0.85, letterSpacing: 1, textTransform: "uppercase" }}>
+            <div style={{ fontSize: 12, opacity: 0.95, letterSpacing: 1, textTransform: "uppercase", textShadow: "0 1px 2px rgba(0,0,0,0.25)" }}>
               {palette.icon} {palette.label} · {kindIcon} {kindLabel}
             </div>
-            <h1 style={{ margin: "6px 0 4px", fontSize: 26, fontWeight: 700, letterSpacing: -0.5 }}>
+            <h1 style={{ margin: "6px 0 4px", fontSize: 26, fontWeight: 700, letterSpacing: -0.5, textShadow: "0 2px 6px rgba(0,0,0,0.28)" }}>
               {fullName(record)}
             </h1>
-            <Space size={16} wrap style={{ fontSize: 13, opacity: 0.92 }}>
+            <Space size={16} wrap style={{ fontSize: 13, opacity: 0.95, textShadow: "0 1px 3px rgba(0,0,0,0.22)" }}>
               {record.normalized_phone ? (
                 <span>
                   <PhoneOutlined /> {String(record.normalized_phone)}

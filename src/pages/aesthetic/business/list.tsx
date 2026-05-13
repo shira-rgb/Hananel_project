@@ -2,6 +2,7 @@ import { useList, useUpdate } from "@refinedev/core";
 import { Form, Input, Button, Card, Spin, notification, Descriptions, Space } from "antd";
 import { EditOutlined, CheckOutlined, CloseOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
+import { PageShell } from "../../../components/PageShell";
 
 const { TextArea } = Input;
 
@@ -42,9 +43,14 @@ export const AestheticBusinessList = () => {
   if (isLoading) return <Spin style={{ margin: 40 }} />;
 
   return (
+    <PageShell
+      business="aesthetic"
+      title="מידע על העסק"
+      subtitle="פרטי הקליניקה — שעות פעילות, כתובת, לינקים ופרטי קשר זמינים לסוכן."
+    >
     <Card
       title="מידע על העסק — קליניקת אסתטיקה"
-      style={{ maxWidth: 720, margin: "0 auto" }}
+      style={{ width: "100%" }}
       extra={
         !isEditing ? (
           <Button icon={<EditOutlined />} onClick={() => setIsEditing(true)}>
@@ -107,5 +113,6 @@ export const AestheticBusinessList = () => {
         </Form>
       )}
     </Card>
+    </PageShell>
   );
 };
