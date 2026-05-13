@@ -32,7 +32,7 @@ export function PageShell({
 }: PageShellProps) {
   const palette = resolvePalette(business);
 
-  const shellStyle: CSSProperties & Record<string, string> = {
+  const shellStyle: CSSProperties & Record<string, string | number> = {
     padding: "8px 8px 32px",
     maxWidth,
     margin: "0 auto",
