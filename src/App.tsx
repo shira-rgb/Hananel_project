@@ -18,6 +18,9 @@ import { theme } from "./theme";
 import "./index.css";
 
 import { LoginPage } from "./pages/login";
+import { ForgotPasswordPage } from "./pages/auth/forgot-password";
+import { SetPasswordPage } from "./pages/auth/set-password";
+import { UsersPage } from "./pages/users";
 import { HomePage } from "./pages/home";
 
 // Aesthetic pages
@@ -245,6 +248,12 @@ function App() {
               edit: "/doctors/edit/:id",
               meta: { label: "👨‍⚕️ רופאים ומטפלים" },
             },
+            // ── ניהול גישה ──
+            {
+              name: "users",
+              list: "/users",
+              meta: { label: "🔐 ניהול משתמשים" },
+            },
           ]}
           options={{ syncWithLocation: true, warnWhenUnsavedChanges: true }}
         >
@@ -275,6 +284,9 @@ function App() {
               }
             >
               <Route index element={<HomePage />} />
+
+              {/* Users management */}
+              <Route path="/users" element={<UsersPage />} />
 
               {/* Doctors */}
               <Route path="/doctors" element={<DoctorList />} />
@@ -349,6 +361,8 @@ function App() {
             </Route>
 
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/auth/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/auth/set-password" element={<SetPasswordPage />} />
           </Routes>
 
           <UnsavedChangesNotifier />

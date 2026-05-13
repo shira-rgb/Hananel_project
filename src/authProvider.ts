@@ -1,49 +1,82 @@
 import type { AuthProvider } from "@refinedev/core";
-
-const STORAGE_KEY = "hananel_auth";
-const DASHBOARD_PASSWORD = import.meta.env.VITE_DASHBOARD_PASSWORD || "hananel2024";
+import { supabaseClient } from "./supabaseClient";
 
 export const authProvider: AuthProvider = {
-  login: async ({ username, password }) => {
+  login: async ({ email, password }: { email?: string; password?: string }) => {
+    const cleanEmail = (email ?? "").trim().toLowerCase();
     const cleanPassword = (password ?? "").trim();
-    const cleanUsername = (username ?? "admin").trim();
-    if (
-      (cleanUsername === "admin" || cleanUsername === "") &&
-      (cleanPassword === DASHBOARD_PASSWORD ||
-        cleanPassword === "hananel2024" ||
-        cleanPassword === "Hananel2024" ||
-        cleanPassword === "1234" ||
-        cleanPassword === "admin" ||
-        cleanPassword.toLowerCase() === "hananel2024")
-    ) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({ username: "admin" }));
-      setTimeout(() => { window.location.href = "/"; }, 50);
-      return { success: true, redirectTo: "/" };
+    if (!cleanEmail || !cleanPassword) {
+      return {
+        success: false,
+        error: { name: "שגיאת כניסה", message: "חסר מייל או סיסמה" },
+      };
     }
-    return {
-      success: false,
-      error: { name: "שגיאת כניסה", message: "סיסמה שגויה" },
-    };
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email: cleanEmail,
+      password: cleanPassword,
+    });
+    if (error || !data?.session) {
+      return {
+        success: false,
+        error: { name: "שגיאת כניסה", message: error?.message || "סיסמה שגויה" },
+      };
+    }
+    return { success: true, redirectTo: "/" };
   },
 
   logout: async () => {
-    localStorage.removeItem(STORAGE_KEY);
+    await supabaseClient.auth.signOut();
     return { success: true, redirectTo: "/login" };
   },
 
   check: async () => {
-    const auth = localStorage.getItem(STORAGE_KEY);
-    if (auth) return { authenticated: true };
+    const { data } = await supabaseClient.auth.getSession();
+    if (data?.session) return { authenticated: true };
     return { authenticated: false, redirectTo: "/login" };
   },
 
   getIdentity: async () => {
-    const auth = localStorage.getItem(STORAGE_KEY);
-    if (auth) {
-      const { username } = JSON.parse(auth);
-      return { id: username, name: username };
+    const { data } = await supabaseClient.auth.getUser();
+    if (!data?.user) return null;
+    const { id, email, user_metadata } = data.user;
+    return {
+      id,
+      email,
+      name: (user_metadata?.full_name as string) || email || "משתמש",
+    };
+  },
+
+  forgotPassword: async ({ email }: { email?: string }) => {
+    const cleanEmail = (email ?? "").trim().toLowerCase();
+    if (!cleanEmail) {
+      return {
+        success: false,
+        error: { name: "שגיאה", message: "חסר מייל" },
+      };
     }
-    return null;
+    const redirectTo = `${window.location.origin}/auth/set-password`;
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(cleanEmail, {
+      redirectTo,
+    });
+    if (error) {
+      return { success: false, error: { name: "שגיאה", message: error.message } };
+    }
+    return { success: true };
+  },
+
+  updatePassword: async ({ password }: { password?: string }) => {
+    const clean = (password ?? "").trim();
+    if (!clean || clean.length < 8) {
+      return {
+        success: false,
+        error: { name: "שגיאה", message: "סיסמה חייבת להיות לפחות 8 תווים" },
+      };
+    }
+    const { error } = await supabaseClient.auth.updateUser({ password: clean });
+    if (error) {
+      return { success: false, error: { name: "שגיאה", message: error.message } };
+    }
+    return { success: true, redirectTo: "/" };
   },
 
   onError: async (error) => {
