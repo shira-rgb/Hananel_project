@@ -308,7 +308,6 @@ export function FollowupSettings({ business }: { business: Business }) {
     }
   };
 
-  const configuredCount = Object.values(rowState).filter((r) => r.configId).length;
 
   const columns = [
     {
@@ -481,7 +480,6 @@ export function FollowupSettings({ business }: { business: Business }) {
           </div>
           <Space size={12} wrap>
             <HeroPill label="סה״כ טיפולים" value={products.length} />
-            <HeroPill label="מוגדרו פולואפ" value={configuredCount} highlight />
           </Space>
         </div>
       </div>

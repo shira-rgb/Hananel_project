@@ -79,7 +79,6 @@ export const DoctorList = () => {
   ].filter(Boolean), [visibleCols]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const totalDoctors = (tableProps.dataSource as Doctor[] | undefined)?.length ?? 0;
-  const acceptingNew = (tableProps.dataSource as Doctor[] | undefined)?.filter(d => d.accepting_new_patients).length ?? 0;
 
   return (
     <PageShell
@@ -89,7 +88,6 @@ export const DoctorList = () => {
       subtitle="ניהול צוות הרופאים והמטפלים בשני העסקים — שיוך עסק, תחומי מומחיות וזמינות לקבלת מטופלים חדשים."
       kpis={[
         { label: "סה״כ", value: totalDoctors },
-        { label: "מקבלים חדשים", value: acceptingNew, highlight: true },
       ]}
     >
     <List
